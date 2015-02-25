@@ -22,4 +22,9 @@ class HomeController extends Controller
     {
         $this->getView()->render('home/index');
     }
+
+    public function upload()
+    {
+        var_dump($_FILES);
+    }
 }

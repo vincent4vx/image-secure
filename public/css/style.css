@@ -1,0 +1,19 @@
+.container .jumbotron
+{
+    margin-top: 100px;
+}
+.jumbotron
+{
+    position: relative;
+}
+.container p
+{
+    text-align: justify;
+}
+
+#drag_message
+{
+    position: absolute;
+    top: 30%;
+    left: 30%;
+}

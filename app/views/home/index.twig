@@ -1,7 +1,21 @@
 {% extends "layout/default" %}
 
 {% block content %}
-    <p>
-        <b>Hello world !</b> And welcome to SFramework !
-    </p>
+    <div class="jumbotron">
+        <div class="content">
+            <h1>Image secure</h1>
+            <h2>Partager vos photos de manière sécurisé !</h2>
+            <p>
+                Grâce à Image Secure, vous pouvez partager des photos avec vos amis ou votre famille
+                de manière sécurisé. <br/>
+                En effet, votre image sera cryptée de sorte à ce que vous soyez la seule personne à pouvoir
+                la consulter (grâce à la clé que vous avez fournie lors de l'upload de l'image ou une qui sera générée par nos services).
+            </p>
+            <a class="btn btn-primary btn-lg" href="#" role="button">
+                <i class="glyphicon glyphicon-upload"></i>
+                Sélectionner une image
+            </a>
+            <h3>ou glisser l'image dans ce cadre</h3>
+        </div>
+    </div>
 {% endblock %}
