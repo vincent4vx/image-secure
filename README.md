@@ -1,2 +1,0 @@
-# image-secure
-Javascript project 
