@@ -11,37 +11,24 @@ fileHandler.launch = function(file){
     var contentSave = $('.jumbotron').html();
 
     $('.jumbotron').empty();
+
     $('.jumbotron').append(
         $('<h3 />')
             .text('Image selectionnée : ' + file.name),
         $('<img>')
-            .attr('id', 'hiddenImage')
+            .attr('id', 'uploaded-image')
+            .addClass('responsive-image')
+            .addClass('center-block')
     );
 
     var fileReader = new FileReader();
     fileReader.onload = function (e){
 
-        $('#hiddenImage').attr('src', e.target.result)
-        var width = $('#hiddenImage').width();
-        var height = $('#hiddenImage').height();
+        console.log(e.target.result);
 
-        $('.jumbotron').append(
-            $('<canvas />')
-                .addClass('img-responsive')
-                .addClass('center-block')
-                .attr('width', width)
-                .attr('height', height)
-                .attr('id', 'canvas-uploaded')
-        );
+        $('#uploaded-image').attr('src', e.target.result)
 
-        var canvas = $('#canvas-uploaded')[0];
-        var context = canvas.getContext('2d');
-
-        $('#hiddenImage').load(function() {
-           context.drawImage(this, 0, 0);
-           $('#hiddenImage').remove();
-           fileHandler.generateForm();
-        });
+        fileHandler.generateForm();
     };
     fileReader.readAsDataURL(file);
 };
@@ -54,22 +41,59 @@ fileHandler.generateForm = function(){
             $('<form />')
                 .attr('method', 'POST')
                 .attr('action', '#')
-                .addClass('form-horizontal')
+                .addClass('form-inline')
                 .append(
-                $('<textarea />')
-                    .addClass('form-control')
-                    .attr('rows', '3'),
-                $('<button />')
-                    .attr('type', 'submit')
-                    .addClass('btn')
-                    .addClass('btn-primary')
-                    .text('Envoyer')
-            )
+                    $('<div />')
+                        .addClass('form-group')
+                        .append(
+                            $('<label />')
+                                .attr('for', 'key')
+                                .text('Votre clé privée : '),
+                            $('<input />')
+                                .addClass('form-control')
+                                .attr('type', 'text')
+                                .attr('placeholder', 'Clé privée ...')
+                                .attr('id', 'key')
+                                .attr('name', 'key'),
+                            $('<button />')
+                                .addClass('btn')
+                                .addClass('btn-info')
+                                .append(
+                                    $('<i />')
+                                        .addClass('glyphicon')
+                                        .addClass('glyphicon-repeat')
+                                )
+                                .on('click', function(e){
+                                   e.preventDefault();
+                                   var newKey = fileHandler.generateKey();
+                                   $('#key').attr('value', newKey);
+                                }),
+                            $('<button />')
+                                .attr('type', 'submit')
+                                .addClass('btn')
+                                .addClass('btn-primary')
+                                .text('Envoyer')
+                                .on('click', function(e){
+                                    e.preventDefault();
+                                    fileHandler.encrypt($('form').serializeArray()[0]);
+                                })
+                        )
+                    )
         );
 };
 
-fileHandler.encrypt = function(){
-
+/**
+ * Encrypt an image (base64 content) using AES CryptoJS implementation
+ */
+fileHandler.encrypt = function(key){
+    console.log(key.value);
+    // ÇA MARCHE
+    /*var encrypt = CryptoJS.AES.encrypt(toEncrypt, "2c93598a50e3cf32eea4e4190e0dff2b3ccacb8d");
+    var decrypt = CryptoJS.AES.decrypt(encrypt, "2c93598a50e3cf32eea4e4190e0dff2b3ccacb8d");
+    var final = atob(decrypt.toString(CryptoJS.enc.Base64));
+    var prefix = 'data:image/png;base64';
+    final = prefix + ', ' + final;*/
+    // ÇA MARCHE BIEN !!!!
 };
 
 fileHandler.upload = function(file){
@@ -100,6 +124,27 @@ fileHandler.upload = function(file){
             console.log(data);
         }
     });
+};
+
+/**
+ * Generate a random string
+ * @returns {string}
+ */
+fileHandler.generateKey = function(){
+    var key = '';
+    // Random size (between 32 and 64)
+    var size = Math.floor(Math.random() * 64) + 32;
+
+    for(var i = 0; i < size; ++i) {
+        var currentChar = Math.floor(Math.random() * 100);
+        // escape space, tab and backspace
+        while($.inArray(currentChar, [32, 9, 8]) !== -1) {
+            currentChar = Math.floor(Math.random() * 100);
+        }
+
+        key += String.fromCharCode(currentChar);
+    }
+    return key;
 };
 
 $(document).ready(function(){

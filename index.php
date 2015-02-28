@@ -30,7 +30,7 @@ function main()
 
     $router->add('/errors/err404', new \app\controllers\ErrorsController(), 'err404');
     $router->add('/upload', new \app\controllers\HomeController(), 'upload', 'POST');
-    $router->add('/', new \app\controllers\HomeController(), 'index');
+    $router->add('/', new \app\controllers\HomeController(), 'index');  
 
     $router->matchCurrentRequest();
 }

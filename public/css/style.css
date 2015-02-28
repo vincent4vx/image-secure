@@ -17,3 +17,7 @@ h1
 {
     font-size: 7rem;
 }
+.form-inline button, .form-inline input[type="text"]
+{
+    margin-left: 5px;
+}
