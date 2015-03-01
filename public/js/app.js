@@ -147,31 +147,44 @@ fileHandler.generateKey = function(){
     return key;
 };
 
+fileHandler.onDragEnter = function(e){
+    e.stopPropagation();
+    e.preventDefault();
+};
+
+fileHandler.onDragOver = function(e){
+    e.stopPropagation();
+    e.preventDefault();
+
+    $('.jumbotron .content').css('opacity', '0.1');
+    if($('.jumbotron #drag_message').html() === undefined)
+        $('.jumbotron').append('<h2 id="drag_message">Envoyer votre fichier !</h2>');
+};
+
+fileHandler.onDragLeave = function(){
+    $('.jumbotron .content').css('opacity', '1');
+    $('#drag_message').remove();
+};
+
+fileHandler.onDrop = function(e){
+    e.preventDefault();
+    $('.jumbotron .content').css('opacity', '1');
+    var file = e.originalEvent.dataTransfer.files;
+    $('#drag_message').remove();
+    fileHandler.launch(file);
+
+    $('.jumbotron').off('dragenter');
+    $('.jumbotron').off('dragover');
+    $('.jumbotron').off('dragleave');
+    $('.jumbotron').off('drop');
+};
+
 $(document).ready(function(){
 
     $('.jumbotron').on({
-        dragenter : function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-        },
-        dragover: function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-
-            $('.jumbotron .content').css('opacity', '0.1');
-            if($('.jumbotron #drag_message').html() === undefined)
-                $('.jumbotron').append('<h2 id="drag_message">Envoyer votre fichier !</h2>');
-        },
-        dragleave: function(e){
-            $('.jumbotron .content').css('opacity', '1');
-            $('#drag_message').remove();
-        },
-        drop: function(e) {
-            e.preventDefault();
-            $('.jumbotron .content').css('opacity', '1');
-            var file = e.originalEvent.dataTransfer.files;
-            $('#drag_message').remove();
-            fileHandler.launch(file);
-        }
+        dragenter : function(e){fileHandler.onDragEnter(e);},
+        dragover : function(e){fileHandler.onDragOver(e);},
+        dragleave : function(){fileHandler.onDragLeave()},
+        drop : function(e){fileHandler.onDrop(e)}
     });
 });
