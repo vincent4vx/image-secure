@@ -25,15 +25,13 @@ fileHandler.launch = function(file){
     fileReader.onload = function (e){
 
         console.log(e.target.result);
-
         $('#uploaded-image').attr('src', e.target.result)
-
-        fileHandler.generateForm();
+        fileHandler.generateForm(e.target.result);
     };
     fileReader.readAsDataURL(file);
 };
 
-fileHandler.generateForm = function(){
+fileHandler.generateForm = function(image){
     $('.jumbotron').append(
             $('<p />')
                 .text('Si vous le souhaitez, vous pouvez saisir votre clé privée afin de crypter votre image' +
@@ -75,7 +73,7 @@ fileHandler.generateForm = function(){
                                 .text('Envoyer')
                                 .on('click', function(e){
                                     e.preventDefault();
-                                    fileHandler.encrypt($('form').serializeArray()[0]);
+                                    fileHandler.encrypt(image, $('form').serializeArray()[0]);
                                 })
                         )
                     )
@@ -85,16 +83,21 @@ fileHandler.generateForm = function(){
 /**
  * Encrypt an image (base64 content) using AES CryptoJS implementation
  */
-fileHandler.encrypt = function(key){
+fileHandler.encrypt = function(image, key){
     console.log(key.value);
-    // ÇA MARCHE
-    /*var encrypt = CryptoJS.AES.encrypt(toEncrypt, "2c93598a50e3cf32eea4e4190e0dff2b3ccacb8d");
-    var decrypt = CryptoJS.AES.decrypt(encrypt, "2c93598a50e3cf32eea4e4190e0dff2b3ccacb8d");
+
+    var imageArray = image.split(',');
+    var encrypt = CryptoJS.AES.encrypt(imageArray[1], key.value);
+    encrypt = imageArray[0] + ',' + encrypt.toString();
+
+    /*var decrypt = CryptoJS.AES.decrypt(encrypt, "2c93598a50e3cf32eea4e4190e0dff2b3ccacb8d");
     var final = atob(decrypt.toString(CryptoJS.enc.Base64));
     var prefix = 'data:image/png;base64';
     final = prefix + ', ' + final;*/
-    // ÇA MARCHE BIEN !!!!
+
+    fileHandler.upload(encrypt);
 };
+
 
 fileHandler.upload = function(file){
     var formData = new FormData();
@@ -111,7 +114,7 @@ fileHandler.upload = function(file){
             xhr.upload.addEventListener("progress", function(e) {
                 if (e.lengthComputable) {
                     var percentCompleted = e.loaded / e.total;
-                    percentCompleted = (percentComplete * 100).toFixed(2);
+                    percentCompleted = (percentCompleted * 100).toFixed(2);
                     console.log(percentCompleted);
                     if (percentCompleted === 100) {
                         console.log('finish');
