@@ -66,7 +66,7 @@ class Input
                 throw new InputNotSetException('$_POST', $key);
             return null;
         }
-        //TODO: Protect input $_GET
+        //TODO: Protect input $_POST
         return self::quote_smart($_POST[$key]);
     }
 

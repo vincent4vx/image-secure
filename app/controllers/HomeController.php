@@ -8,6 +8,9 @@
 
 namespace app\controllers;
 
+use app\helpers\AJAXAnswer;
+use SFramework\Exceptions\InputNotSetException;
+use SFramework\Helpers\Input;
 use SFramework\mvc\Controller;
 
 class HomeController extends Controller
@@ -25,30 +28,33 @@ class HomeController extends Controller
 
     public function upload()
     {
-        /*var_dump($_POST);
-        var_dump($_FILES);*/
-        $acceptedFormat = [
-            'data:image/png;base64',
-            'data:image/jpeg;base64',
-            'data:image/gif;base64',
-            'data:image/bmp;base64'
-        ];
-
-        if(isset($_POST) && isset($_POST['file']) && !empty($_POST['file']))
+        try
         {
-            $data = explode(',', $_POST['file']);
-            var_dump($data[0]);
+            $acceptedFormat = [
+                'data:image/png;base64',
+                'data:image/jpeg;base64',
+                'data:image/gif;base64',
+                'data:image/bmp;base64'
+            ];
+
+            $filePOST = Input::post('file');
+            $filenamePOST = Input::post('filename');
+
+            $data = explode(',', $filePOST);
+
             if(in_array($data[0], $acceptedFormat))
             {
-                echo 'bonjour je suis le vomi';
-                $file = new \SplFileObject('content/test.jpg', 'wb');
+                $fileName = sha1($filenamePOST . time());
+                $file = new \SplFileObject('content/' . $fileName , 'wb');
                 $file->fwrite(base64_decode($data[1]));
-                $file = null;
-                /*$ifp = fopen('content/test.jpg', "wb");
-                fwrite($ifp, base64_decode($data[1]));
-                fclose($ifp);*/
             }
-
+        }
+        catch(InputNotSetException $e)
+        {
+            $error = new AJAXAnswer(false);
+            $error->setMessage('La requête envoyée au serveur n\'est pas complète, merci de rééssayer ou de contacter
+                              l\'administrateur du site si cette même erreur survient');
+            $error->answer();
         }
     }
 }

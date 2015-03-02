@@ -26,12 +26,12 @@ fileHandler.launch = function(file){
 
         console.log(e.target.result);
         $('#uploaded-image').attr('src', e.target.result)
-        fileHandler.generateForm(e.target.result);
+        fileHandler.generateForm(file.name, e.target.result);
     };
     fileReader.readAsDataURL(file);
 };
 
-fileHandler.generateForm = function(image){
+fileHandler.generateForm = function(filename, image){
     $('.jumbotron').append(
             $('<p />')
                 .text('Si vous le souhaitez, vous pouvez saisir votre clé privée afin de crypter votre image' +
@@ -73,7 +73,7 @@ fileHandler.generateForm = function(image){
                                 .text('Envoyer')
                                 .on('click', function(e){
                                     e.preventDefault();
-                                    fileHandler.encrypt(image, $('form').serializeArray()[0]);
+                                    fileHandler.encrypt(filename, image, $('form').serializeArray()[0]);
                                 })
                         )
                     )
@@ -83,7 +83,7 @@ fileHandler.generateForm = function(image){
 /**
  * Encrypt an image (base64 content) using AES CryptoJS implementation
  */
-fileHandler.encrypt = function(image, key){
+fileHandler.encrypt = function(filename, image, key){
     console.log(key.value);
 
     var imageArray = image.split(',');
@@ -95,12 +95,13 @@ fileHandler.encrypt = function(image, key){
     var prefix = 'data:image/png;base64';
     final = prefix + ', ' + final;*/
 
-    fileHandler.upload(encrypt);
+    fileHandler.upload(filename, encrypt);
 };
 
 
-fileHandler.upload = function(file){
+fileHandler.upload = function(filename, file){
     var formData = new FormData();
+    formData.append('filename', filename);
     formData.append('file', file);
 
     $.ajax({
