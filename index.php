@@ -1,7 +1,7 @@
 <?php
 
 require 'vendor/autoload.php';
-
+use SFramework\Database\DatabaseProvider;
 session_start();
 
 define('CR', "\n");
@@ -26,6 +26,8 @@ if (DEBUG) {
 
 function main()
 {
+    DatabaseProvider::connect("app/config/database.json");
+
     $router = new \SFramework\Routing\Router();
 
     $router->add('/errors/err404', new \app\controllers\ErrorsController(), 'err404');

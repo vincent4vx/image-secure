@@ -1,0 +1,7 @@
+{
+  "host": "localhost",
+  "user": "suchuser",
+  "password": "muchpassword",
+  "database": "wow",
+  "port": "3306"
+}
