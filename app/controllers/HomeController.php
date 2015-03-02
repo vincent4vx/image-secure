@@ -34,14 +34,15 @@ class HomeController extends Controller
             'data:image/bmp;base64'
         ];
 
-        if(isset($_POST) && isset($_POST['file']) && isset($_POST['filename']) && !empty($_POST['file']))
+        if(isset($_POST) && isset($_POST['file']) && !empty($_POST['file']))
         {
             $data = explode(',', $_POST['file']);
-
+            var_dump($data[0]);
             if(in_array($data[0], $acceptedFormat))
             {
+                echo 'bonjour je suis le vomi';
                 $file = new \SplFileObject('content/test.jpg', 'wb');
-                $file->fwrite($ifp, base64_decode($data[1]));
+                $file->fwrite(base64_decode($data[1]));
                 $file = null;
                 /*$ifp = fopen('content/test.jpg', "wb");
                 fwrite($ifp, base64_decode($data[1]));
