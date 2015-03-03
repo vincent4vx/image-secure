@@ -31,6 +31,7 @@ function main()
     $router = new \SFramework\Routing\Router();
 
     $router->add('/errors/err404', new \app\controllers\ErrorsController(), 'err404');
+    $router->add('/image/view', new \app\controllers\HomeController(), 'view');
     $router->add('/upload', new \app\controllers\HomeController(), 'upload', 'POST');
     $router->add('/', new \app\controllers\HomeController(), 'index');  
 

@@ -41,8 +41,6 @@ fileHandler.launch = function(file){
 
     var fileReader = new FileReader();
     fileReader.onload = function (e){
-
-        console.log(e.target.result);
         $('#uploaded-image').attr('src', e.target.result)
         fileHandler.generateForm(file.name, e.target.result);
     };
@@ -203,7 +201,7 @@ fileHandler.onFileSuccess = function(fileID, key){
                     .attr('name', 'link')
                     .attr('type', 'text')
                     .addClass('form-control')
-                    .attr('value', 'http://' + window.location.host + '/' + fileID + '/' + key)
+                    .attr('value', 'http://' + window.location.host + '/image/view/' + fileID + '/' + key)
             )
         )
     );

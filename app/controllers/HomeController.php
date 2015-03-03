@@ -10,6 +10,7 @@ namespace app\controllers;
 
 use app\helpers\AJAXAnswer;
 use SFramework\Exceptions\InputNotSetException;
+use SFramework\Exceptions\MissingParamsException;
 use SFramework\Helpers\Input;
 use SFramework\mvc\Controller;
 
@@ -71,6 +72,19 @@ class HomeController extends Controller
         {
             $error = new AJAXAnswer(false, $e->getMessage());
             $error->answer();
+        }
+    }
+
+    public function view()
+    {
+        try
+        {
+            $params = $this->getParams();
+            var_dump($params);
+        }
+        catch(MissingParamsException $e)
+        {
+            $this->getView()->redirect('/');
         }
     }
 }
