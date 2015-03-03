@@ -4,21 +4,39 @@
 var fileHandler = {};
 
 fileHandler.launch = function(file){
-    /*$('.content').append('<div class="progress"></div>');
-    $('.progress').append('<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"' + ' aria-valuemax="100" style="min-width: 2em;">0%</div>');*/
     file = file[0];
 
-    var contentSave = $('.jumbotron').html();
+    fileHandler.homePageSave = $('.jumbotron').html();
 
     $('.jumbotron').empty();
 
     $('.jumbotron').append(
-        $('<h3 />')
-            .text('Image selectionnée : ' + file.name),
-        $('<img>')
-            .attr('id', 'uploaded-image')
-            .addClass('responsive-image')
-            .addClass('center-block')
+        $('<button />')
+            .attr('type', 'button')
+            .addClass('btn')
+            .addClass('btn-primary')
+            .append(
+            $('<i />')
+                .addClass('glyphicon')
+                .addClass('glyphicon-arrow-left'),
+            $('<b />')
+                .text(' Retour')
+        )
+            .on('click', function(e){
+                e.preventDefault();
+                $('.jumbotron').empty();
+                $('.jumbotron').html(fileHandler.homePageSave);
+            }),
+        $('<div />')
+            .attr('id', 'content')
+            .append(
+                $('<h3 />')
+                    .text('Image selectionnée : ' + file.name),
+                $('<img>')
+                    .attr('id', 'uploaded-image')
+                    .addClass('img-responsive')
+                    .addClass('center-block')
+        )
     );
 
     var fileReader = new FileReader();
@@ -32,7 +50,7 @@ fileHandler.launch = function(file){
 };
 
 fileHandler.generateForm = function(filename, image){
-    $('.jumbotron').append(
+    $('#content').append(
             $('<p />')
                 .text('Si vous le souhaitez, vous pouvez saisir votre clé privée afin de crypter votre image' +
                 ', sinon, une clé sera générée automatiquement par l\'application'),
@@ -110,8 +128,8 @@ fileHandler.upload = function(filename, file, key){
     formData.append('filename', filename);
     formData.append('file', file);
 
-    $('.jumbotron').empty();
-    $('.jumbotron').append(
+    $('#content').empty();
+    $('#content').append(
         $('<h3 />')
             .text('Chargement ...'),
         $('<div />')
@@ -166,8 +184,9 @@ fileHandler.upload = function(filename, file, key){
 };
 
 fileHandler.onFileSuccess = function(fileID, key){
-    $('.jumbotron').empty();
-    $('.jumbotron').append(
+    $('#content').empty();
+    $('#content').append(
+
         $('<h2 />')
             .text('Terminé'),
         $('<p />')
@@ -245,10 +264,10 @@ fileHandler.onDrop = function(e){
 
 $(document).ready(function(){
 
-    $('.jumbotron').on({
+    $(document).on({
         dragenter : function(e){fileHandler.onDragEnter(e);},
         dragover : function(e){fileHandler.onDragOver(e);},
         dragleave : function(){fileHandler.onDragLeave()},
         drop : function(e){fileHandler.onDrop(e)}
-    });
+    }, '.jumbotron');
 });
