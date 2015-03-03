@@ -84,10 +84,11 @@ fileHandler.generateForm = function(filename, image){
  * Encrypt an image (base64 content) using AES CryptoJS implementation
  */
 fileHandler.encrypt = function(filename, image, key){
-    console.log(key.value);
-
     var imageArray = image.split(',');
-    var encrypt = CryptoJS.AES.encrypt(imageArray[1], key.value);
+    var keyCrypted = CryptoJS.SHA1(key.value).toString();
+
+    var encrypt = CryptoJS.AES.encrypt(imageArray[1], keyCrypted);
+
     encrypt = imageArray[0] + ',' + encrypt.toString();
 
     /*var decrypt = CryptoJS.AES.decrypt(encrypt, "2c93598a50e3cf32eea4e4190e0dff2b3ccacb8d");
@@ -95,14 +96,37 @@ fileHandler.encrypt = function(filename, image, key){
     var prefix = 'data:image/png;base64';
     final = prefix + ', ' + final;*/
 
-    fileHandler.upload(filename, encrypt);
+    fileHandler.upload(filename, encrypt, keyCrypted);
 };
 
-
-fileHandler.upload = function(filename, file){
+/**
+ * Upload the encrypted file and displays a progress bar
+ * @param filename
+ * @param file
+ * @param key
+ */
+fileHandler.upload = function(filename, file, key){
     var formData = new FormData();
     formData.append('filename', filename);
     formData.append('file', file);
+
+    $('.jumbotron').empty();
+    $('.jumbotron').append(
+        $('<h3 />')
+            .text('Chargement ...'),
+        $('<div />')
+            .addClass('progress')
+            .append(
+                $('<div />')
+                    .addClass('progress-bar')
+                    .attr('role', 'progressbar')
+                    .attr('aria-valuenow', '0')
+                    .attr('aria-valuemin', '0')
+                    .attr('aria-valuemax', '100')
+                    .attr('style', 'min-width: 2em;')
+                    .text('0%')
+        )
+    );
 
     $.ajax({
         url: '/upload',
@@ -116,18 +140,54 @@ fileHandler.upload = function(filename, file){
                 if (e.lengthComputable) {
                     var percentCompleted = e.loaded / e.total;
                     percentCompleted = (percentCompleted * 100).toFixed(2);
-                    console.log(percentCompleted);
-                    if (percentCompleted === 100) {
-                        console.log('finish');
+
+                    $('.jumbotron .progress-bar')
+                        .attr('aria-valuenow', percentCompleted)
+                        .attr('style', 'min-width: 2em; width: ' + percentCompleted + '%;')
+                        .text(percentCompleted + '%');
+
+                    if (Math.round(percentCompleted) === 100) {
+                        $('.jumbotron .progress-bar')
+                            .addClass('progress-bar-success')
+                            .text('Terminé !');
                     }
                 }
             }, false);
             return xhr;
         },
         success: function(data){
-            console.log(data);
+            if(data !== undefined){
+                if(data.success !== undefined && data.success){
+                    fileHandler.onFileSuccess(data.message, key);
+                }
+            }
         }
     });
+};
+
+fileHandler.onFileSuccess = function(fileID, key){
+    $('.jumbotron').empty();
+    $('.jumbotron').append(
+        $('<h2 />')
+            .text('Terminé'),
+        $('<p />')
+            .text('Votre fichier a bien été envoyé, copier/coller le lien ci-dessous pour partager votre image.'),
+        $('<form />').append(
+            $('<div />')
+                .addClass('form-group')
+                .append(
+                $('<label />')
+                    .attr('for', 'link')
+                    .text('Votre lien'),
+                $('<input>')
+                    .attr('type', 'email')
+                    .attr('name', 'link')
+                    .attr('type', 'text')
+                    .addClass('form-control')
+                    .attr('value', 'http://' + window.location.host + '/' + fileID + '/' + key)
+            )
+        )
+    );
 };
 
 /**

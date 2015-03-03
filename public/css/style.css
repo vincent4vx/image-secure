@@ -2,6 +2,16 @@
 {
     position: relative;
 }
+.jumbotron .progress-bar
+{
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 200%;
+}
+.jumbotron .progress
+{
+    height: 4rem;
+}
 .container p
 {
     text-align: justify;

@@ -56,5 +56,15 @@ class AJAXAnswer
     /**
      * Display the AJAX answer (in JSON)
      */
-    public function answer() { echo json_encode($this); }
+    public function answer()
+    {
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Content-type: application/json');
+
+        $message = new \stdClass();
+        $message->success = $this->success;
+        $message->message = $this->message;
+        echo json_encode($message);
+    }
 }

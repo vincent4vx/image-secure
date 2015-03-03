@@ -16,8 +16,14 @@ use SFramework\mvc\Controller;
 class HomeController extends Controller
 {
 
+    /**
+     * @var ImageModel model
+     */
+    private $imageModel;
+
     public function __construct()
     {
+        $this->imageModel = $this->loadModel('Image');
         parent::__construct();
     }
 
@@ -42,18 +48,28 @@ class HomeController extends Controller
 
             $data = explode(',', $filePOST);
 
-            if(in_array($data[0], $acceptedFormat))
-            {
-                $fileName = sha1($filenamePOST . time());
-                $file = new \SplFileObject('content/' . $fileName , 'wb');
-                $file->fwrite(base64_decode($data[1]));
+            if(!in_array($data[0], $acceptedFormat)) {
+                throw new \Exception('Le format envoyé n\'est pas valide');
             }
+
+            $fileName = sha1($filenamePOST . time());
+            $file = new \SplFileObject('content/' . $fileName , 'wb');
+            $file->fwrite(base64_decode($data[1]));
+
+            $this->imageModel->addFile($fileName);
+            $success = new AJAXAnswer(true, $fileName);
+            $success->answer();
         }
         catch(InputNotSetException $e)
         {
             $error = new AJAXAnswer(false);
             $error->setMessage('La requête envoyée au serveur n\'est pas complète, merci de rééssayer ou de contacter
                               l\'administrateur du site si cette même erreur survient');
+            $error->answer();
+        }
+        catch(\Exception $e)
+        {
+            $error = new AJAXAnswer(false, $e->getMessage());
             $error->answer();
         }
     }
