@@ -13,6 +13,7 @@ fileHandler.launch = function(file){
     $('.jumbotron').append(
         $('<button />')
             .attr('type', 'button')
+            .attr('id', 'return-btn')
             .addClass('btn')
             .addClass('btn-primary')
             .append(
@@ -21,12 +22,7 @@ fileHandler.launch = function(file){
                 .addClass('glyphicon-arrow-left'),
             $('<b />')
                 .text(' Retour')
-        )
-            .on('click', function(e){
-                e.preventDefault();
-                $('.jumbotron').empty();
-                $('.jumbotron').html(fileHandler.homePageSave);
-            }),
+        ),
         $('<div />')
             .attr('id', 'content')
             .append(
@@ -38,6 +34,12 @@ fileHandler.launch = function(file){
                 .addClass('center-block')
         )
     );
+
+    $('.jumbotron').on('click', '#return-btn', function(e){
+        e.preventDefault();
+        $('.jumbotron').empty();
+        $('.jumbotron').html(fileHandler.homePageSave);
+    });
 
     var fileReader = new FileReader();
     fileReader.onload = function (e){
@@ -164,9 +166,4 @@ fileHandler.onDrop = function(e){
     var file = e.originalEvent.dataTransfer.files;
     $('#drag_message').remove();
     fileHandler.launch(file);
-
-    $(document).off('dragenter');
-    $(document).off('dragover');
-    $(document).off('dragleave');
-    $(document).off('drop');
 };
