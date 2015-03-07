@@ -1,0 +1,21 @@
+{% extends "layout/default" %}
+
+{% block content %}
+    <div class="jumbotron">
+        {% if missingKey %}
+            <div class="alert alert-danger" role="alert">
+                <b>Erreur !</b> Aucune clé n'a été fournie, vous ne pourrez pas décrypter l'image.
+                <a class="alert-link" href="/">Cliquer ici</a> pour retourner à l'accueil.
+            </div>
+        {% else %}
+            <div class="content">
+                <h2>Votre image</h2>
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ helpers.assets.js('view') }}
+{% endblock %}

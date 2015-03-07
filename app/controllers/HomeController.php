@@ -80,11 +80,38 @@ class HomeController extends Controller
         try
         {
             $params = $this->getParams();
-            var_dump($params);
+            if(count($params) == 2)
+                $this->getView()->render('home/view');
+            else
+                $this->getView()->render('home/view', ['missingKey' => true]);
         }
         catch(MissingParamsException $e)
         {
             $this->getView()->redirect('/');
+        }
+    }
+
+    public function getImage()
+    {
+        try
+        {
+            $imageID = Input::get('id');
+            $file = new \SplFileObject('content/' . $imageID , 'r');
+            $response = new AJAXAnswer(true, $file->fread($file->getSize()));
+            $file = null;
+            $response->answer();
+
+        }
+        catch(InputNotSetException $e)
+        {
+            $error = new AJAXAnswer(false, $e->getMessage());
+            $error->answer();
+        }
+        catch(Exception $e)
+        {
+            $error = new AJAXAnswer(false, 'Une erreur est survenue durant la récupération de l\'image, veuillez'
+                . ' rééssayer ou contacter l\'administrateur du site');
+            $error->answer();
         }
     }
 }

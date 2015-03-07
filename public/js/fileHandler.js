@@ -30,12 +30,12 @@ fileHandler.launch = function(file){
         $('<div />')
             .attr('id', 'content')
             .append(
-                $('<h3 />')
-                    .text('Image selectionnée : ' + file.name),
-                $('<img>')
-                    .attr('id', 'uploaded-image')
-                    .addClass('img-responsive')
-                    .addClass('center-block')
+            $('<h3 />')
+                .text('Image selectionnée : ' + file.name),
+            $('<img>')
+                .attr('id', 'uploaded-image')
+                .addClass('img-responsive')
+                .addClass('center-block')
         )
     );
 
@@ -49,51 +49,51 @@ fileHandler.launch = function(file){
 
 fileHandler.generateForm = function(filename, image){
     $('#content').append(
-            $('<p />')
-                .text('Si vous le souhaitez, vous pouvez saisir votre clé privée afin de crypter votre image' +
-                ', sinon, une clé sera générée automatiquement par l\'application'),
-            $('<form />')
-                .attr('method', 'POST')
-                .attr('action', '#')
-                .addClass('form-inline')
+        $('<p />')
+            .text('Si vous le souhaitez, vous pouvez saisir votre clé privée afin de crypter votre image' +
+            ', sinon, une clé sera générée automatiquement par l\'application'),
+        $('<form />')
+            .attr('method', 'POST')
+            .attr('action', '#')
+            .addClass('form-inline')
+            .append(
+            $('<div />')
+                .addClass('form-group')
                 .append(
-                    $('<div />')
-                        .addClass('form-group')
-                        .append(
-                            $('<label />')
-                                .attr('for', 'key')
-                                .text('Votre clé privée : '),
-                            $('<input />')
-                                .addClass('form-control')
-                                .attr('type', 'text')
-                                .attr('placeholder', 'Clé privée ...')
-                                .attr('id', 'key')
-                                .attr('name', 'key'),
-                            $('<button />')
-                                .addClass('btn')
-                                .addClass('btn-info')
-                                .append(
-                                    $('<i />')
-                                        .addClass('glyphicon')
-                                        .addClass('glyphicon-repeat')
-                                )
-                                .on('click', function(e){
-                                   e.preventDefault();
-                                   var newKey = fileHandler.generateKey();
-                                   $('#key').attr('value', newKey);
-                                }),
-                            $('<button />')
-                                .attr('type', 'submit')
-                                .addClass('btn')
-                                .addClass('btn-primary')
-                                .text('Envoyer')
-                                .on('click', function(e){
-                                    e.preventDefault();
-                                    fileHandler.encrypt(filename, image, $('form').serializeArray()[0]);
-                                })
-                        )
-                    )
-        );
+                $('<label />')
+                    .attr('for', 'key')
+                    .text('Votre clé privée : '),
+                $('<input />')
+                    .addClass('form-control')
+                    .attr('type', 'text')
+                    .attr('placeholder', 'Clé privée ...')
+                    .attr('id', 'key')
+                    .attr('name', 'key'),
+                $('<button />')
+                    .addClass('btn')
+                    .addClass('btn-info')
+                    .append(
+                    $('<i />')
+                        .addClass('glyphicon')
+                        .addClass('glyphicon-repeat')
+                )
+                    .on('click', function(e){
+                        e.preventDefault();
+                        var newKey = fileHandler.generateKey();
+                        $('#key').attr('value', newKey);
+                    }),
+                $('<button />')
+                    .attr('type', 'submit')
+                    .addClass('btn')
+                    .addClass('btn-primary')
+                    .text('Envoyer')
+                    .on('click', function(e){
+                        e.preventDefault();
+                        fileHandler.encrypt(filename, image, $('form').serializeArray()[0]);
+                    })
+            )
+        )
+    );
 };
 
 /**
@@ -108,9 +108,9 @@ fileHandler.encrypt = function(filename, image, key){
     encrypt = imageArray[0] + ',' + encrypt.toString();
 
     /*var decrypt = CryptoJS.AES.decrypt(encrypt, "2c93598a50e3cf32eea4e4190e0dff2b3ccacb8d");
-    var final = atob(decrypt.toString(CryptoJS.enc.Base64));
-    var prefix = 'data:image/png;base64';
-    final = prefix + ', ' + final;*/
+     var final = atob(decrypt.toString(CryptoJS.enc.Base64));
+     var prefix = 'data:image/png;base64';
+     final = prefix + ', ' + final;*/
 
     fileHandler.upload(filename, encrypt, keyCrypted);
 };
@@ -133,14 +133,14 @@ fileHandler.upload = function(filename, file, key){
         $('<div />')
             .addClass('progress')
             .append(
-                $('<div />')
-                    .addClass('progress-bar')
-                    .attr('role', 'progressbar')
-                    .attr('aria-valuenow', '0')
-                    .attr('aria-valuemin', '0')
-                    .attr('aria-valuemax', '100')
-                    .attr('style', 'min-width: 2em;')
-                    .text('0%')
+            $('<div />')
+                .addClass('progress-bar')
+                .attr('role', 'progressbar')
+                .attr('aria-valuenow', '0')
+                .attr('aria-valuemin', '0')
+                .attr('aria-valuemax', '100')
+                .attr('style', 'min-width: 2em;')
+                .text('0%')
         )
     );
 
@@ -259,13 +259,3 @@ fileHandler.onDrop = function(e){
     $('.jumbotron').off('dragleave');
     $('.jumbotron').off('drop');
 };
-
-$(document).ready(function(){
-
-    $(document).on({
-        dragenter : function(e){fileHandler.onDragEnter(e);},
-        dragover : function(e){fileHandler.onDragOver(e);},
-        dragleave : function(){fileHandler.onDragLeave()},
-        drop : function(e){fileHandler.onDrop(e)}
-    }, '.jumbotron');
-});

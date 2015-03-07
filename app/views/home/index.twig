@@ -1,7 +1,6 @@
 {% extends "layout/default" %}
 
 {% block content %}
-    <h1>Image secure</h1>
     <div class="jumbotron">
         <div class="content">
             <h2>Partager vos photos de manière sécurisé !</h2>
@@ -18,4 +17,8 @@
             <h3>ou glisser l'image dans ce cadre</h3>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+{{ helpers.assets.js('home') }}
 {% endblock %}
