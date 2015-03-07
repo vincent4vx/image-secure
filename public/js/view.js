@@ -5,7 +5,6 @@ $(document).ready(function(){
     var url = $(location).attr('href').split('/');
 
     // if there is 2 parameters (otherwise, PHP will handle the error by itself (HomeController))
-
     if(url.length == 7){
         var imageID = url[url.indexOf('view') + 1];
         var key = url[url.indexOf('view') + 2];
@@ -19,6 +18,7 @@ $(document).ready(function(){
                     .text('Chargement ...')
             )
         );
+
         $.get( "/image/get", {'id': imageID})
             .done(function(data){
                 if(data.success != undefined){

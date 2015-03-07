@@ -5,7 +5,22 @@
 var app = {};
 
 app.displayError = function(message){
-  console.log(message);
+    $('.jumbotron').prepend(
+        $('<div />')
+            .addClass('alert')
+            .addClass('alert-danger')
+            .addClass('alert-error')
+            .append(
+                $('<a />')
+                    .attr('href', '#')
+                    .addClass('close')
+                    .attr('data-dismiss', 'alert')
+                    .html('&times;'),
+                $('<b />')
+                    .text('Erreur ! '),
+                message
+        )
+    );
 };
 
 app.generateProgressBar = function(element){

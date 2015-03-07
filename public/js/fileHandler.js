@@ -107,8 +107,12 @@ fileHandler.upload = function(filename, file, key){
         },
         success: function(data){
             if(data !== undefined){
-                if(data.success !== undefined && data.success){
-                    app.onFileUploadSuccess(data.message, key);
+                if(data.success !== undefined){
+                    if(data.success) {
+                        app.onFileUploadSuccess(data.message, key);
+                    } else {
+                        app.displayError(data.message);
+                    }
                 }
             }
         }
