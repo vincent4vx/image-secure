@@ -102,16 +102,9 @@ fileHandler.generateForm = function(filename, image){
 fileHandler.encrypt = function(filename, image, key){
     var imageArray = image.split(',');
     var keyCrypted = CryptoJS.SHA1(key.value).toString();
-
     var encrypt = CryptoJS.AES.encrypt(imageArray[1], keyCrypted);
 
     encrypt = imageArray[0] + ',' + encrypt.toString();
-
-    /*var decrypt = CryptoJS.AES.decrypt(encrypt, "2c93598a50e3cf32eea4e4190e0dff2b3ccacb8d");
-     var final = atob(decrypt.toString(CryptoJS.enc.Base64));
-     var prefix = 'data:image/png;base64';
-     final = prefix + ', ' + final;*/
-
     fileHandler.upload(filename, encrypt, keyCrypted);
 };
 
@@ -258,4 +251,19 @@ fileHandler.onDrop = function(e){
     $('.jumbotron').off('dragover');
     $('.jumbotron').off('dragleave');
     $('.jumbotron').off('drop');
+};
+
+fileHandler.decrypt = function(image, key){
+    var image = image.split(',');
+    var decrypt = CryptoJS.AES.decrypt(image[1], key);
+    var final = atob(decrypt.toString(CryptoJS.enc.Base64));
+    var prefix = image[0];
+    final = prefix + ', ' + final;
+    $('#img-received').empty();
+    $('#img-received').append(
+        $('<img>')
+            .attr('src', final)
+            .addClass('img-responsive')
+            .addClass('center-block')
+    );
 };

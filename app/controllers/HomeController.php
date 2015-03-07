@@ -48,14 +48,13 @@ class HomeController extends Controller
             $filenamePOST = Input::post('filename');
 
             $data = explode(',', $filePOST);
-
             if(!in_array($data[0], $acceptedFormat)) {
                 throw new \Exception('Le format envoyé n\'est pas valide');
             }
 
             $fileName = sha1($filenamePOST . time());
             $file = new \SplFileObject('content/' . $fileName , 'wb');
-            $file->fwrite(base64_decode($data[1]));
+            $file->fwrite($data[0] . ',' . $data[1]);
 
             $this->imageModel->addFile($fileName);
             $success = new AJAXAnswer(true, $fileName);
@@ -64,8 +63,8 @@ class HomeController extends Controller
         catch(InputNotSetException $e)
         {
             $error = new AJAXAnswer(false);
-            $error->setMessage('La requête envoyée au serveur n\'est pas complète, merci de rééssayer ou de contacter
-                              l\'administrateur du site si cette même erreur survient');
+            $error->setMessage('La requête envoyée au serveur n\'est pas complète, merci de rééssayer ou de contacter'
+                              . ' l\'administrateur du site si cette même erreur survient');
             $error->answer();
         }
         catch(\Exception $e)
@@ -96,11 +95,9 @@ class HomeController extends Controller
         try
         {
             $imageID = Input::get('id');
-            $file = new \SplFileObject('content/' . $imageID , 'r');
-            $response = new AJAXAnswer(true, $file->fread($file->getSize()));
-            $file = null;
+            $image = file_get_contents('content/' . $imageID);
+            $response = new AJAXAnswer(true, $image);
             $response->answer();
-
         }
         catch(InputNotSetException $e)
         {

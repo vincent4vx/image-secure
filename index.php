@@ -32,8 +32,8 @@ function main()
 
     $router->add('/errors/err404', new \app\controllers\ErrorsController(), 'err404');
     $router->add('/image/view', new \app\controllers\HomeController(), 'view');
+    $router->add('/image/get', new \app\controllers\HomeController(), 'getImage');
     $router->add('/upload', new \app\controllers\HomeController(), 'upload', 'POST');
-    $router->add('/getimage', new \app\controllers\HomeController(), 'getImage');
     $router->add('/', new \app\controllers\HomeController(), 'index');  
 
     $router->matchCurrentRequest();
