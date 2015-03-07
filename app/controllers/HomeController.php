@@ -111,4 +111,9 @@ class HomeController extends Controller
             $error->answer();
         }
     }
+
+    public function getSize()
+    {
+
+    }
 }

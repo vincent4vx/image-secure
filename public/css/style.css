@@ -27,6 +27,12 @@ h1
 {
     font-size: 7rem;
 }
+
+h1 a, h1 a:hover
+{
+    text-decoration: none;
+    color: inherit;
+}
 .form-inline button, .form-inline input[type="text"]
 {
     margin-left: 5px;

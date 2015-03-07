@@ -42,58 +42,9 @@ fileHandler.launch = function(file){
     var fileReader = new FileReader();
     fileReader.onload = function (e){
         $('#uploaded-image').attr('src', e.target.result)
-        fileHandler.generateForm(file.name, e.target.result);
+        app.generateEncryptForm(file.name, e.target.result);
     };
     fileReader.readAsDataURL(file);
-};
-
-fileHandler.generateForm = function(filename, image){
-    $('#content').append(
-        $('<p />')
-            .text('Si vous le souhaitez, vous pouvez saisir votre clé privée afin de crypter votre image' +
-            ', sinon, une clé sera générée automatiquement par l\'application'),
-        $('<form />')
-            .attr('method', 'POST')
-            .attr('action', '#')
-            .addClass('form-inline')
-            .append(
-            $('<div />')
-                .addClass('form-group')
-                .append(
-                $('<label />')
-                    .attr('for', 'key')
-                    .text('Votre clé privée : '),
-                $('<input />')
-                    .addClass('form-control')
-                    .attr('type', 'text')
-                    .attr('placeholder', 'Clé privée ...')
-                    .attr('id', 'key')
-                    .attr('name', 'key'),
-                $('<button />')
-                    .addClass('btn')
-                    .addClass('btn-info')
-                    .append(
-                    $('<i />')
-                        .addClass('glyphicon')
-                        .addClass('glyphicon-repeat')
-                )
-                    .on('click', function(e){
-                        e.preventDefault();
-                        var newKey = fileHandler.generateKey();
-                        $('#key').attr('value', newKey);
-                    }),
-                $('<button />')
-                    .attr('type', 'submit')
-                    .addClass('btn')
-                    .addClass('btn-primary')
-                    .text('Envoyer')
-                    .on('click', function(e){
-                        e.preventDefault();
-                        fileHandler.encrypt(filename, image, $('form').serializeArray()[0]);
-                    })
-            )
-        )
-    );
 };
 
 /**
@@ -108,6 +59,21 @@ fileHandler.encrypt = function(filename, image, key){
     fileHandler.upload(filename, encrypt, keyCrypted);
 };
 
+fileHandler.decrypt = function(image, key){
+    var image = image.split(',');
+    var decrypt = CryptoJS.AES.decrypt(image[1], key);
+    var final = atob(decrypt.toString(CryptoJS.enc.Base64));
+    var prefix = image[0];
+    final = prefix + ', ' + final;
+    $('#img-received').empty();
+    $('#img-received').append(
+        $('<img>')
+            .attr('src', final)
+            .addClass('img-responsive')
+            .addClass('center-block')
+    );
+};
+
 /**
  * Upload the encrypted file and displays a progress bar
  * @param filename
@@ -120,22 +86,7 @@ fileHandler.upload = function(filename, file, key){
     formData.append('file', file);
 
     $('#content').empty();
-    $('#content').append(
-        $('<h3 />')
-            .text('Chargement ...'),
-        $('<div />')
-            .addClass('progress')
-            .append(
-            $('<div />')
-                .addClass('progress-bar')
-                .attr('role', 'progressbar')
-                .attr('aria-valuenow', '0')
-                .attr('aria-valuemin', '0')
-                .attr('aria-valuemax', '100')
-                .attr('style', 'min-width: 2em;')
-                .text('0%')
-        )
-    );
+    app.generateProgressBar($('#content'));
 
     $.ajax({
         url: '/upload',
@@ -149,17 +100,7 @@ fileHandler.upload = function(filename, file, key){
                 if (e.lengthComputable) {
                     var percentCompleted = e.loaded / e.total;
                     percentCompleted = (percentCompleted * 100).toFixed(2);
-
-                    $('.jumbotron .progress-bar')
-                        .attr('aria-valuenow', percentCompleted)
-                        .attr('style', 'min-width: 2em; width: ' + percentCompleted + '%;')
-                        .text(percentCompleted + '%');
-
-                    if (Math.round(percentCompleted) === 100) {
-                        $('.jumbotron .progress-bar')
-                            .addClass('progress-bar-success')
-                            .text('Terminé !');
-                    }
+                    app.changeProgressBar($('#content .progress-bar'), percentCompleted);
                 }
             }, false);
             return xhr;
@@ -167,37 +108,11 @@ fileHandler.upload = function(filename, file, key){
         success: function(data){
             if(data !== undefined){
                 if(data.success !== undefined && data.success){
-                    fileHandler.onFileSuccess(data.message, key);
+                    app.onFileUploadSuccess(data.message, key);
                 }
             }
         }
     });
-};
-
-fileHandler.onFileSuccess = function(fileID, key){
-    $('#content').empty();
-    $('#content').append(
-
-        $('<h2 />')
-            .text('Terminé'),
-        $('<p />')
-            .text('Votre fichier a bien été envoyé, copier/coller le lien ci-dessous pour partager votre image.'),
-        $('<form />').append(
-            $('<div />')
-                .addClass('form-group')
-                .append(
-                $('<label />')
-                    .attr('for', 'link')
-                    .text('Votre lien'),
-                $('<input>')
-                    .attr('type', 'email')
-                    .attr('name', 'link')
-                    .attr('type', 'text')
-                    .addClass('form-control')
-                    .attr('value', 'http://' + window.location.host + '/image/view/' + fileID + '/' + key)
-            )
-        )
-    );
 };
 
 /**
@@ -215,7 +130,6 @@ fileHandler.generateKey = function(){
         while($.inArray(currentChar, [32, 9, 8]) !== -1) {
             currentChar = Math.floor(Math.random() * 100);
         }
-
         key += String.fromCharCode(currentChar);
     }
     return key;
@@ -247,23 +161,8 @@ fileHandler.onDrop = function(e){
     $('#drag_message').remove();
     fileHandler.launch(file);
 
-    $('.jumbotron').off('dragenter');
-    $('.jumbotron').off('dragover');
-    $('.jumbotron').off('dragleave');
-    $('.jumbotron').off('drop');
-};
-
-fileHandler.decrypt = function(image, key){
-    var image = image.split(',');
-    var decrypt = CryptoJS.AES.decrypt(image[1], key);
-    var final = atob(decrypt.toString(CryptoJS.enc.Base64));
-    var prefix = image[0];
-    final = prefix + ', ' + final;
-    $('#img-received').empty();
-    $('#img-received').append(
-        $('<img>')
-            .attr('src', final)
-            .addClass('img-responsive')
-            .addClass('center-block')
-    );
+    $(document).off('dragenter');
+    $(document).off('dragover');
+    $(document).off('dragleave');
+    $(document).off('drop');
 };
