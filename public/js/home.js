@@ -5,4 +5,11 @@ $(document).ready(function(){
         dragleave : function(){fileHandler.onDragLeave()},
         drop : function(e){fileHandler.onDrop(e)}
     }, '.jumbotron');
+
+    $(document).on('change', '#file-input', function(e) {
+        fileHandler.launch(e.target.files);
+    });
+    $(document).on('click', '#file-upload-btn', function() {
+        $('#file-input').click();
+    });
 });

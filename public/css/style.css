@@ -16,7 +16,6 @@
 {
     text-align: justify;
 }
-
 #drag_message
 {
     position: absolute;
@@ -27,7 +26,6 @@ h1
 {
     font-size: 7rem;
 }
-
 h1 a, h1 a:hover, button a, button a:hover
 {
     text-decoration: none;
@@ -37,8 +35,11 @@ h1 a, h1 a:hover, button a, button a:hover
 {
     margin-left: 5px;
 }
-
 a
 {
     display: table;
+}
+#file-input
+{
+    display:none;
 }
