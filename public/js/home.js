@@ -12,4 +12,9 @@ $(document).ready(function(){
     $(document).on('click', '#file-upload-btn', function() {
         $('#file-input').click();
     });
+
+    $(document).on('click', '#register-button', function(e){
+        e.preventDefault();
+        app.register();
+    });
 });

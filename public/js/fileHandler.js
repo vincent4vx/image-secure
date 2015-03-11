@@ -5,24 +5,8 @@ var fileHandler = {};
 
 fileHandler.launch = function(file){
     file = file[0];
-
-    fileHandler.homePageSave = $('.jumbotron').html();
-
-    $('.jumbotron').empty();
-
+    app.newPage();
     $('.jumbotron').append(
-        $('<button />')
-            .attr('type', 'button')
-            .attr('id', 'return-btn')
-            .addClass('btn')
-            .addClass('btn-primary')
-            .append(
-            $('<i />')
-                .addClass('glyphicon')
-                .addClass('glyphicon-arrow-left'),
-            $('<b />')
-                .text(' Retour')
-        ),
         $('<div />')
             .attr('id', 'content')
             .append(
@@ -34,12 +18,6 @@ fileHandler.launch = function(file){
                 .addClass('center-block')
         )
     );
-
-    $('.jumbotron').on('click', '#return-btn', function(e){
-        e.preventDefault();
-        $('.jumbotron').empty();
-        $('.jumbotron').html(fileHandler.homePageSave);
-    });
 
     var fileReader = new FileReader();
     fileReader.onload = function (e){

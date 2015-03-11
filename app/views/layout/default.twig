@@ -13,7 +13,36 @@
     {{ helpers.assets.css('style') }}
 </head>
 <body>
-    <div class="container">
+    <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Ouvrir le menu</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Image Secure</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <form action="#" method="POST" class="navbar-form navbar-right" id="connection-form">
+                        <div class="form-group">
+                            <input type="text" placeholder="Mail" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Mot de passe" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-success">Se connecter</button>
+                        <button type="button" class="btn btn-info" id="register-button">S'inscrire</button>
+                    </form>
+
+                </div>
+            </div>
+            <div class="container"></div>
+        </nav>
+    </header>
+    <div class="container" id="site-container">
         <h1><a href="/">Image secure</a></h1>
         {% block content %}
 

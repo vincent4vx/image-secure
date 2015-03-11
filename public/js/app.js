@@ -4,6 +4,7 @@
 
 var app = {};
 
+app.jumbotron = null;
 app.displayError = function(message){
     $('.jumbotron').prepend(
         $('<div />')
@@ -126,4 +127,131 @@ app.onFileUploadSuccess = function(fileID, key){
             )
         )
     );
+};
+app.newPage = function(){
+    app.jumbotron = $('.jumbotron').html();
+
+    $('.jumbotron').empty();
+
+    $('.jumbotron').append(
+        $('<button />')
+            .attr('type', 'button')
+            .attr('id', 'return-btn')
+            .addClass('btn')
+            .addClass('btn-primary')
+            .append(
+            $('<i />')
+                .addClass('glyphicon')
+                .addClass('glyphicon-arrow-left'),
+            $('<b />')
+                .text(' Retour')
+        ));
+
+    $('.jumbotron').on('click', '#return-btn', function(e){
+        e.preventDefault();
+        $('.jumbotron').empty();
+        $('.jumbotron').html(app.jumbotron);
+    });
+};
+
+app.register = function(){
+    $('.jumbotron').fadeOut(0.0001);
+    $('.jumbotron').fadeIn(1000);
+    app.newPage();
+
+    function createFormField(name, title, type, placeholder){
+        $('.jumbotron form').append(
+            $('<div />')
+                .addClass('form-group')
+                .addClass('has-feedback')
+                .append(
+                    $('<label />')
+                        .attr('for', name)
+                        .text(title),
+                    $('<input>')
+                        .attr('type', type)
+                        .addClass('form-control')
+                        .attr('name', name)
+                        .attr('id', name)
+                        .attr('placeholder', placeholder)
+                        .prop('required', true)
+            )
+        );
+    };
+
+    $('.jumbotron').append(
+        $('<h2 />')
+            .text('Inscription'),
+        $('<form />')
+    );
+
+    createFormField('username', 'Nom d\'utilisateur', 'text', 'Nom d\'utilisateur');
+    createFormField('password', 'Mot de passe', 'password', 'Mot de passe');
+    createFormField('password_confirm', 'Confirmation', 'password', 'Confirmation du mot de passe');
+    createFormField('mail', 'Adresse mail', 'email', 'Votre adresse mail');
+
+    $('.jumbotron form').append(
+        $('<div />')
+            .addClass('form-group')
+            .addClass('has-feedback')
+            .append(
+            $('<label />')
+                .attr('for', 'master_key')
+                .attr('id', 'master_key_popover')
+                .append(
+                    $('<a />')
+                        .attr('data-toggle', 'popover')
+                        .attr('data-placement', 'auto')
+                        .attr('data-trigger', 'focus')
+                        .text('Clé Principale')
+            ),
+            $('<input>')
+                .attr('type', 'text')
+                .addClass('form-control')
+                .attr('name', 'master_key')
+                .attr('id', 'master_key')
+                .attr('placeholder', 'Votre clé')
+        ),
+        $('<button />')
+            .attr('type', 'submit')
+            .addClass('btn')
+            .addClass('btn-primary')
+            .text('S\'inscrire')
+    );
+
+    $('#master_key_popover').popover({
+        'content' : "La clé principale vous permet de garder en sécurité les différentes clés privés des fichiers" +
+                    " envoyés sur le site, ne perdez pas cette clé, sans elle il vous sera impossible de retrouver " +
+                    " vos fichiers et de les visualiser.",
+        'title' : "Qu'est-ce que c'est ?"
+    });
+
+    $('.jumbotron').on('keyup', '#password_confirm', function(e){
+        if($(this).val() != $('#password').val()){
+            $(this).parent()
+                .addClass('has-error')
+                .removeClass('has-success')
+            if(!$(this).parent().find('span').length){
+                $(this).parent().append(
+                    $('<span />')
+                        .addClass('glyphicon')
+                        .addClass('glyphicon-remove')
+                        .addClass('form-control-feedback')
+                );
+            } else {
+                $(this).parent().find('span')
+                    .removeClass('glyphicon-ok')
+                    .addClass('glyphicon-remove');
+            }
+        } else {
+            $(this).parent()
+                .removeClass('has-error')
+                .addClass('has-success');
+
+            $(this).parent().find('span')
+                .removeClass('glyphicon-remove')
+                .addClass('glyphicon-ok');
+
+        }
+    })
 };

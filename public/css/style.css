@@ -2,6 +2,10 @@
 {
     position: relative;
 }
+#site-container
+{
+    margin-top: 60px;
+}
 .jumbotron .progress-bar
 {
     font-size: 2rem;
