@@ -5,6 +5,11 @@
 var app = {};
 
 app.jumbotron = null;
+
+/**
+ * This method display any error message returned by the server
+ * @param message
+ */
 app.displayError = function(message){
     $('.jumbotron').prepend(
         $('<div />')
@@ -24,6 +29,10 @@ app.displayError = function(message){
     );
 };
 
+/**
+ * This method generate a progress bar (at 0%)
+ * @param element
+ */
 app.generateProgressBar = function(element){
     element.append(
         $('<h3 />')
@@ -42,6 +51,31 @@ app.generateProgressBar = function(element){
         )
     );
 };
+
+/**
+ *  This method change the progress bar status to the value given (in percent)
+ * @param element
+ * @param percentCompleted
+ */
+app.changeProgressBar = function(element, percentCompleted){
+    element
+        .attr('aria-valuenow', percentCompleted)
+        .attr('style', 'min-width: 2em; width: ' + percentCompleted + '%;')
+        .text(percentCompleted + '%');
+
+    if (Math.round(percentCompleted) === 100) {
+        element
+            .addClass('progress-bar-success')
+            .text('Terminé !');
+    }
+};
+
+
+/**
+ * This method generate the encryption form, which allow the user to define a private key
+ * @param filename
+ * @param image
+ */
 app.generateEncryptForm = function(filename, image){
     $('#content').append(
         $('<p />')
@@ -91,19 +125,11 @@ app.generateEncryptForm = function(filename, image){
     );
 };
 
-app.changeProgressBar = function(element, percentCompleted){
-    element
-        .attr('aria-valuenow', percentCompleted)
-        .attr('style', 'min-width: 2em; width: ' + percentCompleted + '%;')
-        .text(percentCompleted + '%');
-
-    if (Math.round(percentCompleted) === 100) {
-       element
-            .addClass('progress-bar-success')
-            .text('Terminé !');
-    }
-};
-
+/**
+ * This metho give to the user the link to see his encrypted image
+ * @param fileID
+ * @param key
+ */
 app.onFileUploadSuccess = function(fileID, key){
     $('#content').empty();
     $('#content').append(
@@ -128,6 +154,9 @@ app.onFileUploadSuccess = function(fileID, key){
         )
     );
 };
+/**
+ * This method clear the jumbotron (main content of the website) and create a return button to go back in the homepage
+ */
 app.newPage = function(){
     app.jumbotron = $('.jumbotron').html();
 
@@ -154,30 +183,14 @@ app.newPage = function(){
     });
 };
 
+/**
+ * This method create the register form
+ */
 app.register = function(){
     $('.jumbotron').fadeOut(0.0001);
     $('.jumbotron').fadeIn(1000);
-    app.newPage();
 
-    function createFormField(name, title, type, placeholder){
-        $('.jumbotron form').append(
-            $('<div />')
-                .addClass('form-group')
-                .addClass('has-feedback')
-                .append(
-                    $('<label />')
-                        .attr('for', name)
-                        .text(title),
-                    $('<input>')
-                        .attr('type', type)
-                        .addClass('form-control')
-                        .attr('name', name)
-                        .attr('id', name)
-                        .attr('placeholder', placeholder)
-                        .prop('required', true)
-            )
-        );
-    };
+    app.newPage();
 
     $('.jumbotron').append(
         $('<h2 />')
@@ -185,10 +198,10 @@ app.register = function(){
         $('<form />')
     );
 
-    createFormField('username', 'Nom d\'utilisateur', 'text', 'Nom d\'utilisateur');
-    createFormField('password', 'Mot de passe', 'password', 'Mot de passe');
-    createFormField('password_confirm', 'Confirmation', 'password', 'Confirmation du mot de passe');
-    createFormField('mail', 'Adresse mail', 'email', 'Votre adresse mail');
+    app.createFormField('username', 'Nom d\'utilisateur', 'text', 'Nom d\'utilisateur');
+    app.createFormField('password', 'Mot de passe', 'password', 'Mot de passe');
+    app.createFormField('password_confirm', 'Confirmation', 'password', 'Confirmation du mot de passe');
+    app.createFormField('mail', 'Adresse mail', 'email', 'Votre adresse mail');
 
     $('.jumbotron form').append(
         $('<div />')
@@ -210,6 +223,7 @@ app.register = function(){
                 .addClass('form-control')
                 .attr('name', 'master_key')
                 .attr('id', 'master_key')
+                .prop('required', true)
                 .attr('placeholder', 'Votre clé')
         ),
         $('<button />')
@@ -226,32 +240,101 @@ app.register = function(){
         'title' : "Qu'est-ce que c'est ?"
     });
 
-    $('.jumbotron').on('keyup', '#password_confirm', function(e){
+    $('.jumbotron').on('keyup', '#password_confirm', function(){
         if($(this).val() != $('#password').val()){
-            $(this).parent()
-                .addClass('has-error')
-                .removeClass('has-success')
-            if(!$(this).parent().find('span').length){
-                $(this).parent().append(
-                    $('<span />')
-                        .addClass('glyphicon')
-                        .addClass('glyphicon-remove')
-                        .addClass('form-control-feedback')
-                );
-            } else {
-                $(this).parent().find('span')
-                    .removeClass('glyphicon-ok')
-                    .addClass('glyphicon-remove');
-            }
+           app.inputValidity(this, false);
         } else {
-            $(this).parent()
-                .removeClass('has-error')
-                .addClass('has-success');
-
-            $(this).parent().find('span')
-                .removeClass('glyphicon-remove')
-                .addClass('glyphicon-ok');
-
+            app.inputValidity(this, true);
+            app.inputValidity($('#password'), true);
         }
     })
+    $('.jumbotron').on('keyup', '#password', function(){
+        if($(this).val() != $('#password_confirm').val()){
+            app.inputValidity($('#password_confirm'), false);
+        } else {
+            app.inputValidity($('#password_confirm'), true);
+        }
+    });
+
+    $('.jumbotron').on('keyup', '#mail', function(){
+        if(!app.isMailAddressValid($(this).val())){
+            app.inputValidity(this, false);
+        } else {
+            app.inputValidity(this, true);
+        }
+
+    });
+};
+
+/**
+ * This method create a form field in a form (with required input)
+ * @param name
+ * @param title
+ * @param type
+ * @param placeholder
+ */
+app.createFormField = function(name, title, type, placeholder){
+    $('.jumbotron form').append(
+        $('<div />')
+            .addClass('form-group')
+            .addClass('has-feedback')
+            .append(
+            $('<label />')
+                .attr('for', name)
+                .text(title),
+            $('<input>')
+                .attr('type', type)
+                .addClass('form-control')
+                .attr('name', name)
+                .attr('id', name)
+                .attr('placeholder', placeholder)
+                .prop('required', true)
+        )
+    );
+};
+
+/**
+ * This method show the validity of the input (error or success)
+ * @param elem
+ * @param success
+ */
+app.inputValidity = function(elem, success){
+
+    // If span doesn't exist, we create it
+    if(!$(elem).parent().find('span').length){
+        $(elem).parent().append(
+            $('<span />')
+                .addClass('glyphicon')
+                .addClass('form-control-feedback')
+        );
+    }
+    if(success == true){
+        $(elem).parent()
+            .removeClass('has-error')
+            .addClass('has-success');
+        $(elem).parent().find('span')
+            .removeClass('glyphicon-remove')
+            .addClass('glyphicon-ok');
+
+    } else {
+        $(elem).parent()
+            .addClass('has-error')
+            .removeClass('has-success')
+
+        $(elem).parent().find('span')
+            .removeClass('glyphicon-ok')
+            .addClass('glyphicon-remove');
+    }
+};
+
+/**
+ * Check email address validity
+ * Thanks to stackoverflow I don't have to write my own regex
+ * Shamefully copied at http://stackoverflow.com/a/17968929
+ * @param emailAddress
+ * @returns {boolean}
+ */
+app.isMailAddressValid = function(email) {
+    var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
+    return pattern.test(email);
 };
