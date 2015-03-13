@@ -72,14 +72,16 @@ app.changeProgressBar = function(element, percentCompleted){
 
 
 /**
- * This method generate the encryption form, which allow the user to define a private key
+ * This method generate the encryption form, which allow the user to define
+ * a private key
  * @param filename
  * @param image
  */
 app.generateEncryptForm = function(filename, image){
     $('#content').append(
         $('<p />')
-            .text('Si vous le souhaitez, vous pouvez saisir votre clé privée afin de crypter votre image' +
+            .text('Si vous le souhaitez, vous pouvez saisir votre clé privée ' +
+            'afin de crypter votre image' +
             ', sinon, une clé sera générée automatiquement par l\'application'),
         $('<form />')
             .attr('method', 'POST')
@@ -118,7 +120,9 @@ app.generateEncryptForm = function(filename, image){
                     .text('Envoyer')
                     .on('click', function(e){
                         e.preventDefault();
-                        fileHandler.encrypt(filename, image, $('form').serializeArray()[0]);
+                        fileHandler.encrypt(filename,
+                                            image,
+                                            $('form').serializeArray()[0]);
                     })
             )
         )
@@ -136,7 +140,8 @@ app.onFileUploadSuccess = function(fileID, key){
         $('<h2 />')
             .text('Terminé'),
         $('<p />')
-            .text('Votre fichier a bien été envoyé, copier/coller le lien ci-dessous pour partager votre image.'),
+            .text('Votre fichier a bien été envoyé, copier/coller le lien ' +
+            'ci-dessous pour partager votre image.'),
         $('<form />').append(
             $('<div />')
                 .addClass('form-group')
@@ -149,13 +154,15 @@ app.onFileUploadSuccess = function(fileID, key){
                     .attr('name', 'link')
                     .attr('type', 'text')
                     .addClass('form-control')
-                    .attr('value', 'http://' + window.location.host + '/image/view/' + fileID + '/' + key)
+                    .attr('value', 'http://' + window.location.host +
+                                            '/image/view/' + fileID + '/' + key)
             )
         )
     );
 };
 /**
- * This method clear the jumbotron (main content of the website) and create a return button to go back in the homepage
+ * This method clear the jumbotron (main content of the website) and create a
+ * return button to go back in the homepage
  */
 app.newPage = function(){
     app.jumbotron = $('.jumbotron').html();
@@ -198,10 +205,17 @@ app.register = function(){
         $('<form />')
     );
 
-    app.createFormField('username', 'Nom d\'utilisateur', 'text', 'Nom d\'utilisateur');
-    app.createFormField('password', 'Mot de passe', 'password', 'Mot de passe');
-    app.createFormField('password_confirm', 'Confirmation', 'password', 'Confirmation du mot de passe');
-    app.createFormField('mail', 'Adresse mail', 'email', 'Votre adresse mail');
+    app.createFormField('username', 'Nom d\'utilisateur', 'text',
+        'Nom d\'utilisateur');
+
+    app.createFormField('password', 'Mot de passe', 'password',
+        'Mot de passe');
+
+    app.createFormField('password_confirm', 'Confirmation', 'password',
+        'Confirmation du mot de passe');
+
+    app.createFormField('mail', 'Adresse mail', 'email',
+        'Votre adresse mail');
 
     $('.jumbotron form').append(
         $('<div />')
@@ -234,8 +248,10 @@ app.register = function(){
     );
 
     $('#master_key_popover').popover({
-        'content' : "La clé principale vous permet de garder en sécurité les différentes clés privés des fichiers" +
-                    " envoyés sur le site, ne perdez pas cette clé, sans elle il vous sera impossible de retrouver " +
+        'content' : "La clé principale vous permet de garder en sécurité les " +
+                    "différentes clés privés des fichiers" +
+                    " envoyés sur le site, ne perdez pas cette clé, sans " +
+                    "elle il vous sera impossible de retrouver " +
                     " vos fichiers et de les visualiser.",
         'title' : "Qu'est-ce que c'est ?"
     });
@@ -335,6 +351,6 @@ app.inputValidity = function(elem, success){
  * @returns {boolean}
  */
 app.isMailAddressValid = function(email) {
-    var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
+    var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,15})?$/);
     return pattern.test(email);
 };

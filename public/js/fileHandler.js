@@ -80,7 +80,8 @@ fileHandler.upload = function(filename, file, key){
                 if (e.lengthComputable) {
                     var percentCompleted = e.loaded / e.total;
                     percentCompleted = (percentCompleted * 100).toFixed(2);
-                    app.changeProgressBar($('#content .progress-bar'), percentCompleted);
+                    app.changeProgressBar($('#content .progress-bar'),
+                        percentCompleted);
                 }
             }, false);
             return xhr;
@@ -130,7 +131,8 @@ fileHandler.onDragOver = function(e){
 
     $('.jumbotron .content').css('opacity', '0.1');
     if($('.jumbotron #drag_message').html() === undefined)
-        $('.jumbotron').append('<h2 id="drag_message">Envoyer votre fichier !</h2>');
+        $('.jumbotron')
+            .append('<h2 id="drag_message">Envoyer votre fichier !</h2>');
 };
 
 fileHandler.onDragLeave = function(){
