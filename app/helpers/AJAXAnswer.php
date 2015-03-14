@@ -54,17 +54,24 @@ class AJAXAnswer
     public function getSuccess() { return $this->success; }
 
     /**
-     * Display the AJAX answer (in JSON)
+     * Display the json response
+     * @param bool $file
      */
-    public function answer()
+    public function answer($file = false)
     {
         header('Cache-Control: no-cache, must-revalidate');
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Expires: Wed, 09 Nov 1994 15:45:00 GMT');
         header('Content-type: application/json');
 
         $message = new \stdClass();
         $message->success = $this->success;
         $message->message = $this->message;
-        echo json_encode($message, JSON_UNESCAPED_SLASHES);
+        $message = json_encode($message, JSON_UNESCAPED_SLASHES);
+
+        if($file){
+            header("Content-Length: " . mb_strlen($message, 'UTF-8'));
+        }
+
+        echo $message;
     }
 }

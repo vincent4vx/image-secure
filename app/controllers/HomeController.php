@@ -97,7 +97,7 @@ class HomeController extends Controller
             $imageID = Input::get('id');
             $image = file_get_contents('content/' . $imageID);
             $response = new AJAXAnswer(true, $image);
-            $response->answer();
+            $response->answer(true);
         }
         catch(InputNotSetException $e)
         {
