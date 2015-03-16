@@ -16,19 +16,6 @@ $(document).ready(function(){
                 .attr('id', 'img-received')
         );
 
-        /*$.get( "/image/get", {'id': imageID})
-            .done(function(data){
-                if(data.success != undefined){
-                    if(data.success === false) {
-                        app.displayError(data.message);
-                    } else {
-                        fileHandler.decrypt(data.message, key);
-                    }
-                } else {
-                    app.displayError('Le serveur n\'a pas répondu à la ' +
-                                     'requete, veuillez rééssayer');
-                }
-            });*/
         app.generateProgressBar($('.content'));
         $.ajax({
             url: '/image/get',
