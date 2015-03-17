@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS `image-secure`.`users` (
 CREATE TABLE IF NOT EXISTS `image-secure`.`users-images` (
   `userid` INT NOT NULL,
   `imageid` VARCHAR(255) NOT NULL,
+  `key` varchar(255) DEFAULT NULL,
+  `uploaded` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`userid`, `imageid`),
   INDEX `id_idx` (`imageid` ASC),
   CONSTRAINT `id`
