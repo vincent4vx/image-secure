@@ -38,6 +38,7 @@ function main()
         'register', 'POST');
     $router->add('/users/exist', new \app\controllers\HomeController(), 'doesUserExist');
     $router->add('/users/connect', new \app\controllers\HomeController(), 'connect', 'POST');
+    $router->add('/users/disconnect', new \app\controllers\HomeController(), 'disconnect');
     $router->add('/', new \app\controllers\HomeController(), 'index');  
 
     $router->matchCurrentRequest();

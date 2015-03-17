@@ -23,15 +23,18 @@ class UsersModel
             ['username' => $username]);
     }
 
-    public function register($username, $firstname, $lastname, $mail, $password)
+    public function register($username, $firstname, $lastname, $mail, $password,
+                            $master_key)
     {
-        $query = 'INSERT INTO users (username, firstname, lastname, mail, password)'
-                  . ' VALUES(:username, :firstname, :lastname, :mail, :password);';
+        $query = 'INSERT INTO users (username, firstname, lastname, mail, password,
+                  master_key)'
+                  . ' VALUES(:username, :firstname, :lastname, :mail, :password,
+                            :master_key);';
 
         DatabaseProvider::connection()->execute($query,
             ['username' => $username, 'firstname' => $firstname,
                 'lastname' => $lastname, 'mail' => $mail,
-                'password' => $password]);
+                'password' => $password, 'master_key' => $master_key]);
     }
 
     public function connect($username, $password)

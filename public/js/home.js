@@ -33,7 +33,7 @@ $(document).ready(function(){
            } else if(data.success == false){
                app.displayError(data.message);
            } else if (data.success == true){
-                $('#connection-form').fadeOut('fast');
+                $('#connection-form').fadeOut('slow');
                 $('#connection-form').parent().append(
                         $('<ul />')
                             .addClass('nav navbar-nav')
@@ -46,7 +46,15 @@ $(document).ready(function(){
                                         .addClass('glyphicon glyphicon-user'),
                                      ' ' + data.message.username.capitalize()
                                     )
+                                ),
+                            $('<li />').append(
+                                $('<a />')
+                                    .attr('href', '/users/disconnect')
+                                    .append(
+                                    $('<i />')
+                                        .addClass('glyphicon glyphicon-log-out')
                                 )
+                            )
                         )
                 ).addClass('navbar-right');
 

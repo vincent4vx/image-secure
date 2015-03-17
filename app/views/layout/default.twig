@@ -39,6 +39,11 @@
                                     {{ auth.userName|capitalize }}
                                 </a>
                             </li>
+                            <li>
+                                <a href="/users/disconnect">
+                                    <i class="glyphicon glyphicon-log-out"></i>
+                                </a>
+                            </li>
                         </ul>
                     {% else %}
                         <form action="/users/connect" method="POST"

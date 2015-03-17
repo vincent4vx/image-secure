@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`users` (
   `lastname` VARCHAR(50) NULL,
   `mail` VARCHAR(100) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
+  `master_key` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`))
   ENGINE = InnoDB;
 

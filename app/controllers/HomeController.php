@@ -150,8 +150,10 @@ class HomeController extends Controller
 
             $username = strtolower($username);
             $password = sha1($password);
+            $master_key = sha1($master_key);
+
             $userModel->register($username, $firstname, $lastname, $mail,
-                $password);
+                $password, $master_key);
 
             $success = new AJAXAnswer(true, 'Inscription réussie');
             $success->answer();
@@ -232,5 +234,11 @@ class HomeController extends Controller
             $error = new AJAXAnswer(false, $e->getMessage());
             $error->answer();
         }
+    }
+
+    public function disconnect()
+    {
+        Authentication::getInstance()->disconnect();
+        $this->getView()->redirect('/');
     }
 }
