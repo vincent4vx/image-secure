@@ -4,29 +4,20 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Table `image-secure`.`images`
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `mydb` ;
-
--- -----------------------------------------------------
--- Table `mydb`.`images`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`images` (
+CREATE TABLE IF NOT EXISTS `image-secure`.`images` (
   `idimage` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`idimage`))
   ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`users`
+-- Table `image-secure`.`users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`users` (
+CREATE TABLE IF NOT EXISTS `image-secure`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(25) NOT NULL,
   `firstname` VARCHAR(50) NULL,
@@ -39,21 +30,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`users` (
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`users-images`
+-- Table `image-secure`.`users-images`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`users-images` (
+CREATE TABLE IF NOT EXISTS `image-secure`.`users-images` (
   `userid` INT NOT NULL,
   `imageid` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`userid`, `imageid`),
   INDEX `id_idx` (`imageid` ASC),
   CONSTRAINT `id`
   FOREIGN KEY (`userid`)
-  REFERENCES `mydb`.`users` (`username`)
+  REFERENCES `image-secure`.`users` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `idimage`
   FOREIGN KEY (`imageid`)
-  REFERENCES `mydb`.`images` (`idimage`)
+  REFERENCES `image-secure`.`images` (`idimage`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
   ENGINE = InnoDB;
