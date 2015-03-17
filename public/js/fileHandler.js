@@ -65,38 +65,45 @@ fileHandler.upload = function(filename, file, key){
     formData.append('filename', filename);
     formData.append('file', file);
 
-    $('#content').empty();
-    app.generateProgressBar($('#content'));
+    $.get('/check', function(master){
+        if(master.success != undefined && master.success){
+            var master_encrypt = CryptoJS.AES.encrypt(key, master.message);
+            formData.append('key', master_encrypt);
+        }
+    }).done(function(){
+        $('#content').empty();
+        app.generateProgressBar($('#content'));
 
-    $.ajax({
-        url: '/upload',
-        type: 'POST',
-        processData: false,
-        contentType: false,
-        data: formData,
-        xhr: function() {
-            var xhr = new window.XMLHttpRequest();
-            xhr.upload.addEventListener("progress", function(e) {
-                if (e.lengthComputable) {
-                    var percentCompleted = e.loaded / e.total;
-                    percentCompleted = (percentCompleted * 100).toFixed(2);
-                    app.changeProgressBar($('#content .progress-bar'),
-                        percentCompleted);
-                }
-            }, false);
-            return xhr;
-        },
-        success: function(data){
-            if(data !== undefined){
-                if(data.success !== undefined){
-                    if(data.success) {
-                        app.onFileUploadSuccess(data.message, key);
-                    } else {
-                        app.displayError(data.message);
+        $.ajax({
+            url: '/upload',
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: formData,
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(e) {
+                    if (e.lengthComputable) {
+                        var percentCompleted = e.loaded / e.total;
+                        percentCompleted = (percentCompleted * 100).toFixed(2);
+                        app.changeProgressBar($('#content .progress-bar'),
+                            percentCompleted);
+                    }
+                }, false);
+                return xhr;
+            },
+            success: function(data){
+                if(data !== undefined){
+                    if(data.success !== undefined){
+                        if(data.success) {
+                            app.onFileUploadSuccess(data.message, key);
+                        } else {
+                            app.displayError(data.message);
+                        }
                     }
                 }
             }
-        }
+        });
     });
 };
 

@@ -2,7 +2,14 @@
 
 {% block content %}
     <div class="jumbotron">
+        <h3>Historique</h3>
         <div class="content">
+            <ul class="list-group">
+            </ul>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ helpers.assets.js('admin') }}
 {% endblock %}

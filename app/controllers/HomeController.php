@@ -49,6 +49,10 @@ class HomeController extends Controller
             $filePOST = Input::post('file');
             $filenamePOST = Input::post('filename');
 
+            if(Authentication::getInstance()->isAuthenticated()){
+                $key = Input::post('key');
+            }
+
             $data = explode(',', $filePOST);
             if(!in_array($data[0], $acceptedFormat)) {
                 throw new \Exception('Le format envoyé n\'est pas valide');
@@ -59,6 +63,10 @@ class HomeController extends Controller
             $file->fwrite($data[0] . ',' . $data[1]);
 
             $this->imageModel->addFile($fileName);
+            if(Authentication::getInstance()->isAuthenticated()){
+                $this->imageModel->addUserFile(intval(Authentication::getInstance()->getUserId()),
+                    $fileName, $key);
+            }
             $success = new AJAXAnswer(true, $fileName);
             $success->answer();
         }
@@ -240,5 +248,45 @@ class HomeController extends Controller
     {
         Authentication::getInstance()->disconnect();
         $this->getView()->redirect('/');
+    }
+
+    public function check()
+    {
+        if(Authentication::getInstance()->isAuthenticated()){
+            $userModel = new UsersModel();
+            $master = $userModel->getMasterKey(Authentication::getInstance()->getUserName());
+            $master = $master[0]['master_key'];
+
+            $response = new AJAXAnswer(true, $master);
+        } else {
+            $reponse = new AJAXAnswer(false, '');
+        }
+
+        $response->answer();
+    }
+
+    public function admin()
+    {
+        $this->getView()->render('home/admin');
+    }
+
+    public function getImages()
+    {
+        if(Authentication::getInstance()->isAuthenticated()){
+            $info = $this->imageModel->getUsersImages(Authentication::getInstance()->getUserId());
+
+            $content = [];
+            foreach($info as $key => $value){
+                $content[$key] = new \stdClass();
+                $content[$key]->imageid = $value['imageid'];
+                $content[$key]->key = $value['key'];
+                $content[$key]->uploaded = $value['up'];
+            }
+            $response = new AJAXAnswer(true, $content);
+        } else {
+            $response = new AJAXAnswer(false, 'Vous n\'etes pas connecté !');
+        }
+
+        $response->answer();
     }
 }

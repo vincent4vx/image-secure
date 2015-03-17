@@ -36,9 +36,12 @@ function main()
     $router->add('/upload', new \app\controllers\HomeController(), 'upload', 'POST');
     $router->add('/register', new \app\controllers\HomeController(),
         'register', 'POST');
+    $router->add('/users/admin', new \app\controllers\HomeController(), 'admin');
     $router->add('/users/exist', new \app\controllers\HomeController(), 'doesUserExist');
     $router->add('/users/connect', new \app\controllers\HomeController(), 'connect', 'POST');
     $router->add('/users/disconnect', new \app\controllers\HomeController(), 'disconnect');
+    $router->add('/users/getimages', new \app\controllers\HomeController(), 'getImages');
+    $router->add('/check', new \app\controllers\HomeController(), 'check');
     $router->add('/', new \app\controllers\HomeController(), 'index');  
 
     $router->matchCurrentRequest();

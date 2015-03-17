@@ -52,4 +52,11 @@ class UsersModel
 
         return DatabaseProvider::connection()->query($query, [$username]);
     }
+
+    public function getMasterKey($username)
+    {
+        $query = 'SELECT master_key FROM users WHERE username = ?';
+
+        return DatabaseProvider::connection()->query($query, [$username]);
+    }
 } 
