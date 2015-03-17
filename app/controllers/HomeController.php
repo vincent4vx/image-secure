@@ -12,6 +12,7 @@ use app\helpers\AJAXAnswer;
 use app\models\UsersModel;
 use SFramework\Exceptions\InputNotSetException;
 use SFramework\Exceptions\MissingParamsException;
+use SFramework\Helpers\Authentication;
 use SFramework\Helpers\Input;
 use SFramework\mvc\Controller;
 
@@ -146,6 +147,8 @@ class HomeController extends Controller
             if($isUserExists != 0){
                 throw new \Exception('Ce nom d\'utilisateur existe déjà');
             }
+
+            $username = strtolower($username);
             $password = sha1($password);
             $userModel->register($username, $firstname, $lastname, $mail,
                 $password);
@@ -178,9 +181,51 @@ class HomeController extends Controller
 
             $response = new AJAXAnswer();
 
-            if($userExist){
-
+            if(!$userExist){
+                $response->setSuccess(true);
+            } else {
+                $response->setSuccess(false);
             }
+
+            $response->answer();
+        }
+        catch(\Exception $e)
+        {
+            $error = new AJAXAnswer(false, $e->getMessage());
+            $error->answer();
+        }
+    }
+
+    public function connect()
+    {
+        try
+        {
+            $username = Input::post('username');
+            $password = sha1(Input::post('password'));
+
+            $userModel = new UsersModel();
+            $result = $userModel->connect($username, $password)[0]['LOL'];
+            if($result != 1){
+                throw new \Exception('Les identifiants ne sont pas valides');
+            } else {
+                $infos = $userModel->getInfos($username)[0];
+
+                $informations = new \stdClass();
+                $informations->firstname = $infos['firstname'];
+                $informations->lastname = $infos['lastname'];
+                $informations->username = $username;
+
+                Authentication::getInstance()->setAuthenticated($username,
+                    $infos['id']);
+
+                $response = new AJAXAnswer(true, $informations);
+                $response->answer();
+            }
+        }
+        catch(InputNotSetException $e)
+        {
+            $error = new AJAXAnswer(false, 'Un champ est manquant');
+            $error->answer();
         }
         catch(\Exception $e)
         {

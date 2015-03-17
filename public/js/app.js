@@ -11,22 +11,28 @@ app.jumbotron = null;
  * @param message
  */
 app.displayError = function(message){
-    $('.jumbotron').prepend(
-        $('<div />')
-            .addClass('alert')
-            .addClass('alert-danger')
-            .addClass('alert-error')
-            .append(
-                $('<a />')
-                    .attr('href', '#')
-                    .addClass('close')
-                    .attr('data-dismiss', 'alert')
-                    .html('&times;'),
-                $('<b />')
-                    .text('Erreur ! '),
-                message
-        )
-    );
+    if(!$('.jumbotron .alert').length){
+        $('.jumbotron').prepend(
+            $('<div />')
+                .addClass('alert')
+                .addClass('alert-danger')
+                .addClass('alert-error')
+        );
+    } else {
+        $('.jumbotron .alert').empty();
+    }
+
+    $('.jumbotron .alert')
+        .append(
+        $('<a />')
+            .attr('href', '#')
+            .addClass('close')
+            .attr('data-dismiss', 'alert')
+            .html('&times;'),
+        $('<b />')
+            .text('Erreur ! '),
+            message
+    )
 };
 
 /**
@@ -250,19 +256,37 @@ app.register = function(){
             .addClass('btn-primary')
             .text('S\'inscrire')
     );
+    app.registerFormBehaviour();
+};
 
+/**
+ * This method set the behaviour for the register form
+ * such as input validation or error displaying.
+ */
+app.registerFormBehaviour = function(){
     $('#master_key_popover').popover({
         'content' : "La clé principale vous permet de garder en sécurité les " +
-                    "différentes clés privés des fichiers" +
-                    " envoyés sur le site, ne perdez pas cette clé, sans " +
-                    "elle il vous sera impossible de retrouver " +
-                    " vos fichiers et de les visualiser.",
+        "différentes clés privés des fichiers" +
+        " envoyés sur le site, ne perdez pas cette clé, sans " +
+        "elle il vous sera impossible de retrouver " +
+        " vos fichiers et de les visualiser.",
         'title' : "Qu'est-ce que c'est ?"
     });
 
-    $('.jumbotron').on('keyup', '#password_confirm', function(){
+    $('.jumbotron').on('keyup', '#username', function(){
+        var username = $(this).val();
+        if(username.length > 2){
+            $.get('/users/exist/' + username, function(data){
+                if(data.success != undefined && data.success == true){
+                    app.inputValidity($('#username'), true);
+                } else {
+                    app.inputValidity($('#username'), false);
+                }
+            });
+        }
+    }).on('keyup', '#password_confirm', function(){
         if($(this).val() != $('#password').val()){
-           app.inputValidity(this, false);
+            app.inputValidity(this, false);
         } else {
             app.inputValidity(this, true);
             app.inputValidity($('#password'), true);
@@ -280,17 +304,25 @@ app.register = function(){
             app.inputValidity(this, true);
         }
     }).on('keyup', '#master_key', function(){
-       if($('#master_key').val().length < 10){
-           app.inputValidity($('#master_key'), false);
-       } else {
-           app.inputValidity($('#master_key'), true);
-       }
+        if($(this).val().length < 10){
+            app.inputValidity(this, false);
+        } else {
+            app.inputValidity(this, true);
+        }
     }).on('submit', 'form', function(e){
         e.preventDefault();
         var values = $(this).serialize();
 
         $.post('/register', values, function(data){
-            console.log(data);
+
+            if(data.success != undefined && data.success == true){
+                app.registerSuccess();
+            } else if(data.success != undefined && data.success == false){
+                app.displayError(data.message);
+            } else {
+                app.displayError('Une erreur inconnue est survenue, veuillez ' +
+                                'reéssayer');
+            }
         });
     });
 };
@@ -366,4 +398,19 @@ app.inputValidity = function(elem, success){
 app.isMailAddressValid = function(email) {
     var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,15})?$/);
     return pattern.test(email);
+};
+
+/**
+ * This method display the register success page
+ */
+app.registerSuccess = function(){
+    app.newPage();
+    $('.jumbotron').append(
+        $('<h3 />')
+            .text('Inscription réussie'),
+        $('<p />')
+            .text('Bravo, votre inscription est réussie, vous pouvez maintenant' +
+                    ' vous connecter sur notre site et profiter de ces ' +
+                    ' fonctionnalités !')
+    );
 };
