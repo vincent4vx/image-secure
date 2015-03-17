@@ -34,6 +34,8 @@ function main()
     $router->add('/image/view', new \app\controllers\HomeController(), 'view');
     $router->add('/image/get', new \app\controllers\HomeController(), 'getImage');
     $router->add('/upload', new \app\controllers\HomeController(), 'upload', 'POST');
+    $router->add('/register', new \app\controllers\HomeController(),
+        'register', 'POST');
     $router->add('/', new \app\controllers\HomeController(), 'index');  
 
     $router->matchCurrentRequest();

@@ -69,9 +69,8 @@ class AJAXAnswer
         $message = json_encode($message, JSON_UNESCAPED_SLASHES);
 
         if($file){
-            header("Content-Length: " . mb_strlen($message, 'UTF-8'));
+            header("Content-Length: " . strlen($message));
         }
-
         echo $message;
     }
 }

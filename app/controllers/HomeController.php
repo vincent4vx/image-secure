@@ -9,6 +9,7 @@
 namespace app\controllers;
 
 use app\helpers\AJAXAnswer;
+use app\models\UsersModel;
 use SFramework\Exceptions\InputNotSetException;
 use SFramework\Exceptions\MissingParamsException;
 use SFramework\Helpers\Input;
@@ -112,8 +113,79 @@ class HomeController extends Controller
         }
     }
 
-    public function getSize()
+    public function register()
     {
+        try
+        {
+            $username = Input::post('username');
+            $firstname = Input::post('firstname');
+            $lastname = Input::post('lastname');
+            $password = Input::post('password');
+            $password_confirm = Input::post('password_confirm');
+            $mail = Input::post('mail');
+            $master_key = Input::post('master_key');
 
+            if(empty($username) || empty($firstname) || empty($lastname) ||
+                empty($password) || empty ($password_confirm) || empty($mail)
+                || empty($master_key)){
+                throw new \Exception('Certains champs saisis sont vides');
+            }
+            if(strlen($master_key) < 10){
+                throw new \Exception('La clé principale n\' est pas assez
+                longue');
+            }
+            if($password != $password_confirm){
+                throw new \Exception('Les deux mots de passes ne sont pas
+                identiques');
+            }
+            $userModel = new UsersModel();
+            $isUserExists = $userModel->userExist($username);
+
+            $isUserExists = $isUserExists[0]['COUNT(username)'];
+
+            if($isUserExists != 0){
+                throw new \Exception('Ce nom d\'utilisateur existe déjà');
+            }
+            $password = sha1($password);
+            $userModel->register($username, $firstname, $lastname, $mail,
+                $password);
+
+            $success = new AJAXAnswer(true, 'Inscription réussie');
+            $success->answer();
+        }
+        catch(InputNotSetException $e)
+        {
+            $error = new AJAXAnswer(false, $e->getMessage());
+            $error->answer();
+        }
+        catch(\Exception $e)
+        {
+            $error = new AJAXAnswer(false, $e->getMessage());
+            $error->answer();
+        }
+    }
+
+    public function doesUserExist()
+    {
+        try
+        {
+            $params = $this->getParams();
+            $username = $params[0];
+            $userModel = new UsersModel();
+
+            $userExist = $userModel->userExist($username);
+            $userExist = $userExist[0]['COUNT(username)'];
+
+            $response = new AJAXAnswer();
+
+            if($userExist){
+
+            }
+        }
+        catch(\Exception $e)
+        {
+            $error = new AJAXAnswer(false, $e->getMessage());
+            $error->answer();
+        }
     }
 }

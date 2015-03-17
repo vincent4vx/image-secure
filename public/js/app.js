@@ -208,6 +208,10 @@ app.register = function(){
     app.createFormField('username', 'Nom d\'utilisateur', 'text',
         'Nom d\'utilisateur');
 
+    app.createFormField('firstname', 'Prénom', 'text', 'Prénom');
+
+    app.createFormField('lastname', 'Nom', 'text', 'Nom');
+
     app.createFormField('password', 'Mot de passe', 'password',
         'Mot de passe');
 
@@ -263,22 +267,31 @@ app.register = function(){
             app.inputValidity(this, true);
             app.inputValidity($('#password'), true);
         }
-    })
-    $('.jumbotron').on('keyup', '#password', function(){
+    }).on('keyup', '#password', function(){
         if($(this).val() != $('#password_confirm').val()){
             app.inputValidity($('#password_confirm'), false);
         } else {
             app.inputValidity($('#password_confirm'), true);
         }
-    });
-
-    $('.jumbotron').on('keyup', '#mail', function(){
+    }).on('keyup', '#mail', function(){
         if(!app.isMailAddressValid($(this).val())){
             app.inputValidity(this, false);
         } else {
             app.inputValidity(this, true);
         }
+    }).on('keyup', '#master_key', function(){
+       if($('#master_key').val().length < 10){
+           app.inputValidity($('#master_key'), false);
+       } else {
+           app.inputValidity($('#master_key'), true);
+       }
+    }).on('submit', 'form', function(e){
+        e.preventDefault();
+        var values = $(this).serialize();
 
+        $.post('/register', values, function(data){
+            console.log(data);
+        });
     });
 };
 
