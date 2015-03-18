@@ -68,7 +68,7 @@ fileHandler.upload = function(filename, file, key){
     $.get('/check', function(master){
         if(master.success != undefined && master.success){
             var master_encrypt = CryptoJS.AES.encrypt(key, master.message);
-            formData.append('key', master_encrypt);
+            formData.append('key', master_encrypt.toString());
         }
     }).done(function(){
         $('#content').empty();

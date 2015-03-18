@@ -41,7 +41,7 @@ h1 a, h1 a:hover, button a, button a:hover
 }
 a
 {
-    display: table;
+    display: inline-block;
 }
 #file-input
 {

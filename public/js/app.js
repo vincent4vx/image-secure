@@ -409,8 +409,31 @@ app.registerSuccess = function(){
         $('<h3 />')
             .text('Inscription réussie'),
         $('<p />')
-            .text('Bravo, votre inscription est réussie, vous pouvez maintenant' +
-                    ' vous connecter sur notre site et profiter de ces ' +
+            .text('Bravo, votre inscription est réussie, vous pouvez maintenant'
+            + ' vous connecter sur notre site et profiter de ces ' +
                     ' fonctionnalités !')
     );
+};
+
+/**
+ * This method return a Date Object to a string with the format
+ * dd/mm/yyyy HH:MM
+ * @param date
+ * @returns {string}
+ */
+app.convertDate = function(date){
+    var year = date.getFullYear();
+    var month = parseInt(date.getMonth()) + 1;
+    month = (month.length > 1) ? month : '0' + month;
+
+    var day = date.getDate().toString();
+    day = (day.length > 1) ? day : '0' + day;
+
+    var minutes = date.getMinutes();
+    minutes = (minutes.toString().length > 1) ? minutes : '0' + minutes;
+
+    var hour = date.getHours();
+    hour = (hour.toString().length > 1) ? hour : '0' + hour;
+
+    return day + '/' + month + '/' + year + ' ' + hour + ':' + minutes;
 };

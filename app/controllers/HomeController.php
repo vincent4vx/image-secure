@@ -47,7 +47,7 @@ class HomeController extends Controller
             ];
 
             $filePOST = Input::post('file');
-            $filenamePOST = Input::post('filename');
+            $filenamePOST = htmlentities(Input::post('filename'));
 
             if(Authentication::getInstance()->isAuthenticated()){
                 $key = Input::post('key');
@@ -281,7 +281,7 @@ class HomeController extends Controller
                 $content[$key]->imageid = $value['imageid'];
                 $content[$key]->key = $value['key'];
                 $content[$key]->uploaded = $value['up'];
-                $content[$key]->filename = $value['imagename'];
+                $content[$key]->filename = html_entity_decode($value['imagename']);
             }
             $response = new AJAXAnswer(true, $content);
         } else {
