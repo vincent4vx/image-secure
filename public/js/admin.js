@@ -12,13 +12,16 @@ $(document).ready(function(){
                     var list = $('.jumbotron ul');
                     list.append(
                         $('<li />')
+                            .attr('id', 'sorting-links')
                             .addClass('list-group-item clearfix')
                             .append(
                             $('<a />')
+                                .attr('href', '#')
                                 .attr('id', 'byName')
                                 .addClass('pull-left')
                                 .text('Nom'),
                             $('<a />')
+                                .attr('href', '#')
                                 .attr('id', 'byDate')
                                 .addClass('pull-right')
                                 .text('Envoyé le')
@@ -64,4 +67,63 @@ $(document).ready(function(){
             }
         });
     });
+
+    /**
+     * This function sort the images list on admin list
+     * @param toCatch
+     * @param alpha
+     */
+    function sortList (toCatch, alpha){
+        var tabName = [];
+        $('ul.list-group li').each(function(){
+            if($(this).attr('id') != 'sorting-links'){
+                var elem = {'title' : $(this).find(toCatch).text(),
+                    'tag' : $(this)};
+                tabName.push(elem);
+            }
+        });
+
+        tabName.sort(function(a, b){
+            if(alpha){
+                return a.title.localeCompare(b.title);
+            } else {
+                return b.title.localeCompare(a.title);
+            }
+        });
+        var first = $('#sorting-links').html();
+        $('.jumbotron ul.list-group')
+            .empty()
+            .append(
+            $('<li />')
+                .attr('id', 'sorting-links')
+                .addClass('list-group-item clearfix')
+                .html(first)
+        );
+        for(var i = 0; i < tabName.length; ++i){
+            $('.jumbotron ul.list-group').append(tabName[i].tag);
+        }
+    };
+
+    /**
+     * This function check the order class to know which sort to make
+     * @param elemToBind
+     * @param elemSorting
+     */
+    function bindOrder(elemToBind, elemSorting){
+        if($(elemToBind).hasClass('order')){
+            sortList(elemSorting, false);
+        } else {
+            sortList(elemSorting, true);
+        }
+        $(elemToBind).toggleClass('order');
+    };
+
+    $('.jumbotron').on('click', '#byName', function(e){
+        e.preventDefault();
+        bindOrder('#byName', 'a');
+    }).on('click', '#byDate', function(e){
+        e.preventDefault();
+        bindOrder('#byDate', 'span');
+    });
+
 });
