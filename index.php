@@ -33,6 +33,7 @@ function main()
     $router->add('/errors/err404', new \app\controllers\ErrorsController(), 'err404');
     $router->add('/image/view', new \app\controllers\HomeController(), 'view');
     $router->add('/image/get', new \app\controllers\HomeController(), 'getImage');
+    $router->add('/image/delete', new \app\controllers\HomeController(), 'deleteImage');
     $router->add('/upload', new \app\controllers\HomeController(), 'upload', 'POST');
     $router->add('/register', new \app\controllers\HomeController(),
         'register', 'POST');

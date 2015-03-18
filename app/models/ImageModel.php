@@ -42,4 +42,24 @@ class ImageModel extends Model
 
         return DatabaseProvider::connection()->query($query, [$userID]);
     }
+
+    public function checkOwner($userID, $imageID)
+    {
+        $query = 'SELECT userid FROM `users-images` WHERE userid = ? AND imageid = ?';
+
+        return DatabaseProvider::connection()->query($query, [$userID, $imageID]);
+    }
+
+    public function deleteImage($userID, $imageID)
+    {
+        $query = 'DELETE FROM `users-images` WHERE imageid = ? AND userid = ?';
+
+        DatabaseProvider::connection()->execute($query, [$userID, $imageID]);
+
+        $query = 'DELETE FROM images WHERE idimage = ?';
+
+        DatabaseProvider::connection()->execute($query, [$imageID]);
+    }
+
+
 }

@@ -290,4 +290,37 @@ class HomeController extends Controller
 
         $response->answer();
     }
+
+    public function deleteImage()
+    {
+        try
+        {
+            $params = $this->getParams();
+            $imageID = $params[0];
+            if(!Authentication::getInstance()->isAuthenticated()){
+                throw new \Exception('Vous n\'etes pas connecté');
+            }
+
+            $userID = Authentication::getInstance()->getUserId();
+            $id = $this->imageModel->checkOwner($userID, $imageID);
+            if(empty($id)){
+                throw new \Exception('Cette image n\'est pas à vous !');
+            }
+
+            $this->imageModel->deleteImage($userID, $imageID);
+            unlink('content/' . $imageID);
+            $response = new AJAXAnswer(true, 'Image supprimée');
+            $response->answer();
+        }
+        catch(MissingParamsException $e)
+        {
+            $error = new AJAXAnswer(false, 'Aucune image n\'est indiqué');
+            $error->answer();
+        }
+        catch(\Exception $e)
+        {
+            $error = new AJAXAnswer(false, $e->getMessage());
+            $error->answer();
+        }
+    }
 }

@@ -32,6 +32,7 @@ $(document).ready(function(){
                         var key = CryptoJS.AES.decrypt(elem.key, master);
                         key = key.toString(CryptoJS.enc.Utf8);
                         var date = new Date(elem.uploaded * 1000);
+
                         list.append(
                             $('<li />')
                                 .addClass('list-group-item clearfix')
@@ -39,7 +40,7 @@ $(document).ready(function(){
                                 $('<i />')
                                     .addClass('glyphicon glyphicon-trash')
                                     .addClass('pull-right remove-file')
-                                    .attr('id', key),
+                                    .attr('id', elem.imageid),
                                 $('<b />')
                                     .append(
                                     $('<a />').attr('href', 'http://' +
@@ -129,7 +130,27 @@ $(document).ready(function(){
         e.preventDefault();
         bindOrder('#byDate', 'span');
     }).on('click', '.remove-file', function(){
-       console.log('remove');
-       console.log($(this).attr('id'));
+        var imageID = $(this).attr('id');
+        $(this).parent().addClass('list-group-item-danger');
+        var listElem = $(this).parent();
+
+        $.get('/image/delete/' + imageID, function(data){
+           if(data.success != undefined && data.success == false){
+               app.displayError(data.message);
+               listElem.removeClass('list-group-item-danger');
+           } else if (data.success != undefined && data.success == true){
+               listElem.fadeOut('slow', function() {
+                   $(this).remove()
+
+                   if ($('ul.list-group li').length == 1) {
+                       $('ul.list-group').fadeOut('slow');
+                       $('.jumbotron').append('<h4>Vous n\'avez envoyé aucun ' +
+                       'fichier :\'(</h4>');
+                   }
+               });
+           } else {
+               alert('Erreur lors de la transmission, veuillez rééssayer');
+           }
+        });
     });
 });
