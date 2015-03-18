@@ -36,6 +36,10 @@ $(document).ready(function(){
                             $('<li />')
                                 .addClass('list-group-item clearfix')
                                 .append(
+                                $('<i />')
+                                    .addClass('glyphicon glyphicon-trash')
+                                    .addClass('pull-right remove-file')
+                                    .attr('id', key),
                                 $('<b />')
                                     .append(
                                     $('<a />').attr('href', 'http://' +
@@ -124,6 +128,8 @@ $(document).ready(function(){
     }).on('click', '#byDate', function(e){
         e.preventDefault();
         bindOrder('#byDate', 'span');
+    }).on('click', '.remove-file', function(){
+       console.log('remove');
+       console.log($(this).attr('id'));
     });
-
 });

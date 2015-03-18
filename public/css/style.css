@@ -51,3 +51,15 @@ a
 {
     transition-duration: 0.2s;
 }
+.remove-file
+{
+    cursor: pointer;
+}
+.remove-file:before
+{
+    margin-left: 5px;
+}
+.remove-file:hover
+{
+    color: #d9534f;
+}
