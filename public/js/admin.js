@@ -10,9 +10,12 @@ $(document).ready(function(){
                         .append(
                             $('<b />')
                                  .text(data.message[i].filename + ' '),
-                                'Ajouté le ' + date.getDay() + '/' + date.getMonth()
+                            $('<span />')
+                                 .addClass('pull-right')
+                                 .text('Ajouté le ' + date.getDay() + '/' + date.getMonth()
                              + '/' + date.getYear() + ' à ' + date.getHours() +
                                 ':' + date.getMinutes())
+                            )
                         )
                                     } 
            } else {
