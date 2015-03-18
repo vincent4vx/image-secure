@@ -57,7 +57,7 @@ class HomeController extends Controller
             if(!in_array($data[0], $acceptedFormat)) {
                 throw new \Exception('Le format envoyé n\'est pas valide');
             }
-
+            $realFileName = $filenamePOST;
             $fileName = sha1($filenamePOST . time());
             $file = new \SplFileObject('content/' . $fileName , 'wb');
             $file->fwrite($data[0] . ',' . $data[1]);
@@ -65,7 +65,7 @@ class HomeController extends Controller
             $this->imageModel->addFile($fileName);
             if(Authentication::getInstance()->isAuthenticated()){
                 $this->imageModel->addUserFile(intval(Authentication::getInstance()->getUserId()),
-                    $fileName, $key);
+                    $fileName, $key, $realFileName);
             }
             $success = new AJAXAnswer(true, $fileName);
             $success->answer();
@@ -281,6 +281,7 @@ class HomeController extends Controller
                 $content[$key]->imageid = $value['imageid'];
                 $content[$key]->key = $value['key'];
                 $content[$key]->uploaded = $value['up'];
+                $content[$key]->filename = $value['imagename'];
             }
             $response = new AJAXAnswer(true, $content);
         } else {

@@ -20,11 +20,11 @@ class ImageModel extends Model
         DatabaseProvider::connection()->execute($query, [$filename]);
     }
 
-    public function addUserFile($userid, $imageid, $key)
+    public function addUserFile($userid, $imageid, $key, $filename)
     {
-        $query = 'INSERT INTO `users-images` VALUES (?, ?, ?, now())';
+        $query = 'INSERT INTO `users-images` VALUES (?, ?, ?, now(), ?)';
 
-        DatabaseProvider::connection()->execute($query, [$userid, $imageid, $key]);
+        DatabaseProvider::connection()->execute($query, [$userid, $imageid, $key, $filename]);
     }
 
     public function getDate()
@@ -36,7 +36,7 @@ class ImageModel extends Model
 
     public function getUsersImages($userID)
     {
-        $query = 'SELECT imageid, `key`, UNIX_TIMESTAMP(uploaded) AS up'
+        $query = 'SELECT imageid, `key`, UNIX_TIMESTAMP(uploaded) AS up, imagename'
                 . ' FROM `users-images` '
                  . ' WHERE userid = ?';
 
