@@ -1,0 +1,65 @@
+.jumbotron
+{
+    position: relative;
+}
+#site-container
+{
+    margin-top: 60px;
+}
+.jumbotron .progress-bar
+{
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 200%;
+}
+.jumbotron .progress
+{
+    height: 4rem;
+}
+.container p
+{
+    text-align: justify;
+}
+#drag_message
+{
+    position: absolute;
+    top: 30%;
+    left: 30%;
+}
+h1
+{
+    font-size: 7rem;
+}
+h1 a, h1 a:hover, button a, button a:hover
+{
+    text-decoration: none;
+    color: inherit;
+}
+.form-inline button, .form-inline input[type="text"]
+{
+    margin-left: 5px;
+}
+a
+{
+    display: inline-block;
+}
+#file-input
+{
+    display:none;
+}
+.progress-bar
+{
+    transition-duration: 0.2s;
+}
+.remove-file
+{
+    cursor: pointer;
+}
+.remove-file:before
+{
+    margin-left: 5px;
+}
+.remove-file:hover
+{
+    color: #d9534f;
+}

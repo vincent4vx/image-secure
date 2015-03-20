@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Image Secure</title>
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js">
+    </script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js">
+    </script>
+    <![endif]-->
+    <link rel="stylesheet"
+          href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
+    {{ helpers.assets.css('style') }}
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed"
+                            data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Ouvrir le menu</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Image Secure</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    {% if auth.userId %}
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="/users/admin">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    {{ auth.userName|capitalize }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/users/disconnect">
+                                    <i class="glyphicon glyphicon-log-out"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <form action="/users/connect" method="POST"
+                              class="navbar-form navbar-right"
+                              id="connection-form">
+                            <div class="form-group">
+                                <input type="text" id="username_connect"
+                                       name="username" class="form-control"
+                                       placeholder="Nom d'utilisateur">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="password"
+                                       placeholder="Mot de passe"
+                                       class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-success">
+                                Se connecter
+                            </button>
+                            <button type="button" class="btn btn-info"
+                                    id="register-button">
+                                S'inscrire
+                            </button>
+                        </form>
+                    {% endif %}
+
+                </div>
+            </div>
+            <div class="container"></div>
+        </nav>
+    </header>
+    <div class="container" id="site-container">
+        <h1><a href="/">Image secure</a></h1>
+        {% block content %}
+
+        {% endblock %}
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+    <script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+    <script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha1.js"></script>
+    {{ helpers.assets.js('app') }}
+    {{ helpers.assets.js('fileHandler') }}
+    {{ helpers.assets.js('home') }}
+    {% block scripts %}
+
+    {% endblock %}
+</body>
+</html>
