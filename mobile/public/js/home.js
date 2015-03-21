@@ -9,7 +9,7 @@ $(document).ready(function(){
         dragover : function(e){fileHandler.onDragOver(e);},
         dragleave : function(){fileHandler.onDragLeave()},
         drop : function(e){fileHandler.onDrop(e)}
-    }, '.jumbotron');
+    }, '#main-page');
 
     $(document).on('change', '#file-input', function(e) {
         fileHandler.launch(e.target.files);
@@ -29,36 +29,12 @@ $(document).ready(function(){
 
         $.post('/users/connect', infos, function(data){
            if(data.success == undefined){
-               app.displayError('Une erreur est survenue');
+               mobile.displayError('Une erreur est survenue');
            } else if(data.success == false){
-               app.displayError(data.message);
+               mobile.displayError(data.message);
            } else if (data.success == true){
                 $('#connection-form').fadeOut('slow');
-                $('#connection-form').parent().append(
-                        $('<ul />')
-                            .addClass('nav navbar-nav')
-                            .append(
-                                $('<li />').append(
-                                    $('<a />')
-                                        .attr('href', '/users/admin')
-                                        .append(
-                                    $('<i />')
-                                        .addClass('glyphicon glyphicon-user'),
-                                     ' ' + data.message.username.capitalize()
-                                    )
-                                ),
-                            $('<li />').append(
-                                $('<a />')
-                                    .attr('href', '/users/disconnect')
-                                    .append(
-                                    $('<i />')
-                                        .addClass('glyphicon glyphicon-log-out')
-                                )
-                            )
-                        )
-                ).addClass('navbar-right');
-
-               $('#connection-form').remove();
+                location.hash = 'main-page';
            }
         });
     });

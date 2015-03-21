@@ -1,11 +1,3 @@
-.jumbotron
-{
-    position: relative;
-}
-#site-container
-{
-    margin-top: 60px;
-}
 .jumbotron .progress-bar
 {
     font-size: 2rem;
@@ -28,16 +20,12 @@
 }
 h1
 {
-    font-size: 7rem;
+    font-size: 3em;
 }
 h1 a, h1 a:hover, button a, button a:hover
 {
     text-decoration: none;
     color: inherit;
-}
-.form-inline button, .form-inline input[type="text"]
-{
-    margin-left: 5px;
 }
 a
 {
@@ -62,4 +50,57 @@ a
 .remove-file:hover
 {
     color: #d9534f;
+}
+.img-responsive
+{
+    display: block;
+    margin: auto;
+    max-width: 100%;
+}
+.ui-navbar
+{
+    padding-left:0;
+    margin-top:0;
+}
+
+#popupCloseRight
+{
+    z-index: 99999;
+}
+#upload-page
+{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#upload-page .ui-input-text
+{
+    display: inline-block;
+    margin-right: 5px;
+}
+.ui-btn-inline
+{
+    border-radius: 10px;
+}
+.progress-bar
+{
+    display: block;
+    width: 95%;
+    height: 50px;
+    background-color: #FFF;
+    border: 2px solid rgba(100,100,100,0.7);
+    border-radius: 5px;
+}
+.progress-status
+{
+    display: inline-block;
+    height: 100%;
+    min-width: 2%;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #1976D0;
+    opacity: 0.8;
+    color: #000;
+    text-align: center;
+    line-height: 300%;
+    text-shadow: 0 0 0 #000;
 }

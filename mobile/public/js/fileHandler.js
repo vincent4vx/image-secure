@@ -5,24 +5,13 @@ var fileHandler = {};
 
 fileHandler.launch = function(file){
     file = file[0];
-    app.newPage();
-    $('.jumbotron').append(
-        $('<div />')
-            .attr('id', 'content')
-            .append(
-            $('<h3 />')
-                .text('Image selectionnée : ' + file.name),
-            $('<img>')
-                .attr('id', 'uploaded-image')
-                .addClass('img-responsive')
-                .addClass('center-block')
-        )
-    );
+    mobile.newPage('upload-page');
+    mobile.newUploadPage(file);
 
     var fileReader = new FileReader();
     fileReader.onload = function (e){
         $('#uploaded-image').attr('src', e.target.result)
-        app.generateEncryptForm(file.name, e.target.result);
+        mobile.generateEncryptForm(file.name, e.target.result);
     };
     fileReader.readAsDataURL(file);
 };
@@ -71,8 +60,9 @@ fileHandler.upload = function(filename, file, key){
             formData.append('key', master_encrypt.toString());
         }
     }).done(function(){
-        $('#content').empty();
-        app.generateProgressBar($('#content'));
+        mobile.newPage('progress-page');
+        mobile.generateProgressBar($('#progress-page'));
+        $.mobile.changePage('#progress-page');
 
         $.ajax({
             url: '/upload',
@@ -86,8 +76,7 @@ fileHandler.upload = function(filename, file, key){
                     if (e.lengthComputable) {
                         var percentCompleted = e.loaded / e.total;
                         percentCompleted = (percentCompleted * 100).toFixed(2);
-                        app.changeProgressBar($('#content .progress-bar'),
-                            percentCompleted);
+                        mobile.changeProgressBar(percentCompleted);
                     }
                 }, false);
                 return xhr;
@@ -96,9 +85,10 @@ fileHandler.upload = function(filename, file, key){
                 if(data !== undefined){
                     if(data.success !== undefined){
                         if(data.success) {
-                            app.onFileUploadSuccess(data.message, key);
+                            //app.onFileUploadSuccess(data.message, key);
+                            alert('success');
                         } else {
-                            app.displayError(data.message);
+                            mobile.displayError(data.message);
                         }
                     }
                 }

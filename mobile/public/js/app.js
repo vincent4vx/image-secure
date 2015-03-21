@@ -11,28 +11,28 @@ app.jumbotron = null;
  * @param message
  */
 app.displayError = function(message){
-    if(!$('.jumbotron .alert').length){
-        $('.jumbotron').prepend(
+    if(!$('#popupCloseRight').length){
+        $('body').append(
             $('<div />')
-                .addClass('alert')
-                .addClass('alert-danger')
-                .addClass('alert-error')
+                .attr('data-role', 'popup')
+                .attr('id', 'popupCloseRight')
+                .addClass('ui-content')
+                .append(
+                $('<a />')
+                    .attr('href', '#')
+                    .attr('data-rel', 'back')
+                    .addClass('ui-btn ui-corner-all ui-shadow uit-btn-a')
+                    .addClass('ui-icon-delete ui-btn-icon-notext ui-btn-right')
+                    .text("Fermer"),
+                $('<p />')
+                    .text(message)
+            )
         );
     } else {
-        $('.jumbotron .alert').empty();
+        $('#popupCloseRight p').text(message);
     }
-
-    $('.jumbotron .alert')
-        .append(
-        $('<a />')
-            .attr('href', '#')
-            .addClass('close')
-            .attr('data-dismiss', 'alert')
-            .html('&times;'),
-        $('<b />')
-            .text('Erreur ! '),
-            message
-    )
+    $('#popupCloseRight').popup();
+    $('#popupCloseRight').popup("open");
 };
 
 /**
@@ -40,22 +40,7 @@ app.displayError = function(message){
  * @param element
  */
 app.generateProgressBar = function(element){
-    element.append(
-        $('<h3 />')
-            .text('Chargement ...'),
-        $('<div />')
-            .addClass('progress')
-            .append(
-            $('<div />')
-                .addClass('progress-bar')
-                .attr('role', 'progressbar')
-                .attr('aria-valuenow', '0')
-                .attr('aria-valuemin', '0')
-                .attr('aria-valuemax', '100')
-                .attr('style', 'min-width: 2em;')
-                .text('0%')
-        )
-    );
+    mobile.generateLoading();
 };
 
 /**
@@ -64,16 +49,7 @@ app.generateProgressBar = function(element){
  * @param percentCompleted
  */
 app.changeProgressBar = function(element, percentCompleted){
-    element
-        .attr('aria-valuenow', percentCompleted)
-        .attr('style', 'min-width: 2em; width: ' + percentCompleted + '%;')
-        .text(percentCompleted + '%');
-
-    if (Math.round(percentCompleted) === 100) {
-        element
-            .addClass('progress-bar-success')
-            .text('Terminé !');
-    }
+    mobile.changeProgressBar(percentCompleted);
 };
 
 
