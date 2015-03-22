@@ -74,6 +74,9 @@
             </form>
         </div>
     </div>
+    <div data-role="page" id="image-view-page" class="mobile-page">
+        <h2>Votre image</h2>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
     <script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
@@ -81,6 +84,7 @@
     {{ helpers.assets.js('fileHandler') }}
     {{ helpers.assets.js('home') }}
     {{ helpers.assets.js('mobile') }}
+    {{ helpers.assets.js('view-mobile') }}
     {% block scripts %}
 
     {% endblock %}

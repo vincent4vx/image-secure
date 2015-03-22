@@ -36,10 +36,11 @@ fileHandler.decrypt = function(image, key){
     final = prefix + ', ' + final;
     $('#img-received').empty();
     $('#img-received').append(
+        $('<h2 />')
+            .text('Votre image'),
         $('<img>')
             .attr('src', final)
             .addClass('img-responsive')
-            .addClass('center-block')
     );
 };
 
@@ -85,8 +86,7 @@ fileHandler.upload = function(filename, file, key){
                 if(data !== undefined){
                     if(data.success !== undefined){
                         if(data.success) {
-                            //app.onFileUploadSuccess(data.message, key);
-                            alert('success');
+                            mobile.onFileUploadSuccess(data.message, key);
                         } else {
                             mobile.displayError(data.message);
                         }

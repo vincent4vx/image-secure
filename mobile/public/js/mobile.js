@@ -49,11 +49,10 @@ mobile.generateProgressBar = function(elem){
 };
 
 mobile.changeProgressBar = function(percent){
-    console.log(percent);
     if (Math.round(percent) === 100) {
         $('.progress-status')
-            .css({width: percent + '%'})
-            .text(percent);
+            .css({'background-color': '#4CAF50', 'width' : '100%'})
+            .text('Terminé');
     } else {
        $('.progress-status')
             .css({width: percent + '%'})
@@ -134,4 +133,49 @@ mobile.generateEncryptForm = function(filename, image){
     );
 
     $('#upload-page input[type="text"]').textinput();
+};
+
+/**
+ * This method gives to the user the link to see his encrypted image
+ * @param fileID
+ * @param key
+ */
+mobile.onFileUploadSuccess = function(fileID, key){
+    $('body').append(
+        $('<div />')
+            .attr('data-role', 'page')
+            .attr('id', 'upload-success-page')
+            .addClass('mobile-page')
+    );
+
+    $('#upload-success-page').append(
+        $('<h2 />')
+            .text('Terminé'),
+        $('<p />')
+            .text('Votre fichier a bien été envoyé, copier/coller le lien ' +
+            'ci-dessous pour partager votre image.'),
+        $('<form />').append(
+            $('<label />')
+                .attr('for', 'link')
+                .text('Votre lien'),
+            $('<input>')
+                .attr('type', 'text')
+                .attr('name', 'link')
+                .attr('type', 'text')
+                .attr('value', 'http://' + window.location.host +
+                '/image/view/' + fileID + '/' + key)
+        ),
+        $('<a />')
+            .attr('href', 'http://' + window.location.host +
+            '/image/view/' + fileID + '/' + key)
+            .text('Voir l\'image')
+            .on('click', function(e){
+                e.preventDefault();
+                $(location).attr('href', $(this).attr('href'));
+                init();
+            })
+    );
+
+    $('#upload-success-page input[type="text"]').textinput();
+    $.mobile.changePage('#upload-success-page', {transition: 'slide'});
 };
