@@ -1,6 +1,7 @@
-$(document).ready(function(){
-
-    $('.jumbotron ul').hide();
+function admin(){
+    $.mobile.changePage('#admin-page', {transition: 'slide'});
+    $('#admin-page ul').empty();
+    $('#admin-page ul').hide();
     // Get the list of images uploaded by the user and displays it on a list
     $.get('/users/getimages', function(data){
         var master;
@@ -9,21 +10,21 @@ $(document).ready(function(){
         }).done(function(){
             if(data.success != undefined && data.success == true){
                 if(data.message.length > 0){
-                    var list = $('.jumbotron ul');
+                    var list = $('#admin-page ul');
                     list.append(
                         $('<li />')
                             .attr('id', 'sorting-links')
-                            .addClass('list-group-item clearfix')
+                            .addClass('ui-grid-a')
                             .append(
-                            $('<a />')
+                            $('<span />')
                                 .attr('href', '#')
                                 .attr('id', 'byName')
-                                .addClass('pull-left')
+                                .addClass('ui-block-a')
                                 .text('Nom'),
-                            $('<a />')
+                            $('<span />')
                                 .attr('href', '#')
                                 .attr('id', 'byDate')
-                                .addClass('pull-right')
+                                .addClass('ui-block-b')
                                 .text('Envoyé le')
                         )
                     );
@@ -35,36 +36,42 @@ $(document).ready(function(){
 
                         list.append(
                             $('<li />')
-                                .addClass('list-group-item clearfix')
+                                .addClass('ui-grid-a')
                                 .append(
-                                $('<i />')
-                                    .addClass('glyphicon glyphicon-trash')
-                                    .addClass('pull-right remove-file')
-                                    .attr('id', elem.imageid),
                                 $('<b />')
+                                    .addClass('ui-block-a')
                                     .append(
                                     $('<a />').attr('href', 'http://' +
-                                        window.location.host + '/image/view/' +
-                                        elem.imageid + '/' + key )
+                                    window.location.host + '/image/view/' +
+                                    elem.imageid + '/' + key )
                                         .text(elem.filename + ' ')
                                         .addClass('clearfix')
                                 ),
                                 $('<span />')
-                                    .addClass('pull-right')
-                                    .text('Ajouté le ' + app.convertDate(date))
+                                    .addClass('ui-block-b')
+                                    .append(
+                                    $('<span />')
+                                        .addClass('pull-right')
+                                        .text('Ajouté le ' + mobile.convertDate(date)),
+                                    $('<i />')
+                                        .addClass('glyphicon glyphicon-trash')
+                                        .addClass('remove-file')
+                                        .attr('id', elem.imageid)
+                                )
                             )
                         )
                     }
-                    $('.jumbotron ul li').css({opacity:0, bottom:'100%'});
+                    $('#admin-page ul li').css({opacity:0, bottom:'100%'});
                     list.show();
+                    listUpdate();
                     $('ul').each(function() {
                         $(this).children().each(function(i) {
                             $(this).delay((i++) * 100).animate({bottom:0,
-                                                                opacity:1});
+                                opacity:1});
                         });
                     });
                 } else {
-                    $('.jumbotron').append(
+                    $('#admin-page').append(
                         $('<h4 />')
                             .text('Vous n\'avez envoyé aucun fichier :\'(')
                     );
@@ -96,17 +103,18 @@ $(document).ready(function(){
             }
         });
         var first = $('#sorting-links').html();
-        $('.jumbotron ul.list-group')
+        $('#admin-page ul')
             .empty()
             .append(
             $('<li />')
                 .attr('id', 'sorting-links')
-                .addClass('list-group-item clearfix')
+                .addClass('ui-grid-a')
                 .html(first)
         );
         for(var i = 0; i < tabName.length; ++i){
-            $('.jumbotron ul.list-group').append(tabName[i].tag);
+            $('#admin-page ul').append(tabName[i].tag);
         }
+        listUpdate();
     };
 
     /**
@@ -123,7 +131,7 @@ $(document).ready(function(){
         $(elemToBind).toggleClass('order');
     };
 
-    $('.jumbotron').on('click', '#byName', function(e){
+    $('#admin-page').on('click', '#byName', function(e){
         e.preventDefault();
         bindOrder('#byName', 'a');
     }).on('click', '#byDate', function(e){
@@ -131,26 +139,30 @@ $(document).ready(function(){
         bindOrder('#byDate', 'span');
     }).on('click', '.remove-file', function(){
         var imageID = $(this).attr('id');
-        $(this).parent().addClass('list-group-item-danger');
-        var listElem = $(this).parent();
+        var listElem = $(this).parent().parent();
 
         $.get('/image/delete/' + imageID, function(data){
-           if(data.success != undefined && data.success == false){
-               app.displayError(data.message);
-               listElem.removeClass('list-group-item-danger');
-           } else if (data.success != undefined && data.success == true){
-               listElem.fadeOut('slow', function() {
-                   $(this).remove()
+            if(data.success != undefined && data.success == false){
+                mobile.displayError(data.message);
+                listElem.removeClass('list-group-item-danger');
+            } else if (data.success != undefined && data.success == true){
+                listElem.fadeOut('slow', function() {
+                    $(this).remove()
 
-                   if ($('ul.list-group li').length == 1) {
-                       $('ul.list-group').fadeOut('slow');
-                       $('.jumbotron').append('<h4>Vous n\'avez envoyé aucun ' +
-                       'fichier :\'(</h4>');
-                   }
-               });
-           } else {
-               alert('Erreur lors de la transmission, veuillez rééssayer');
-           }
+                    if ($('ul.list-group li').length == 1) {
+                        $('ul.list-group').fadeOut('slow');
+                        $('#admin-page').append('<h4>Vous n\'avez envoyé aucun ' +
+                        'fichier :\'(</h4>');
+                    }
+                });
+            } else {
+                alert('Erreur lors de la transmission, veuillez rééssayer');
+            }
         });
     });
-});
+
+    function listUpdate(){
+        $('#admin-page ul').listview().listview('refresh');
+    }
+}
+

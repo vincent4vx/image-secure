@@ -11,6 +11,9 @@ $(document).ready(function(){
         drop : function(e){fileHandler.onDrop(e)}
     }, '#main-page');
 
+    $(document).on('click', '#admin-page-link', function(){
+        admin();
+    });
     $(document).on('click', '#connection-link', function(e){
         e.preventDefault();
         console.log('click');
@@ -51,7 +54,8 @@ $(document).ready(function(){
                          .append(
                          $('<a />')
                              .addClass('ui-link ui-btn')
-                             .attr('href', '#user-admin-page')
+                             .attr('href', '#admin-page')
+                             .attr('id', 'admin-page-link')
                              .html('<i class="glyphicon glyphicon-user"></i>' +
                               ' ' + username)
                      ),

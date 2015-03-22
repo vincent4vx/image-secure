@@ -267,7 +267,7 @@ class HomeController extends Controller
 
     public function admin()
     {
-        $this->getView()->render('home/admin');
+        $this->getView()->render('home/index');
     }
 
     public function getImages()
