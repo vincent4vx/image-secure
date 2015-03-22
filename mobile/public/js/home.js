@@ -11,6 +11,11 @@ $(document).ready(function(){
         drop : function(e){fileHandler.onDrop(e)}
     }, '#main-page');
 
+    $(document).on('click', '#connection-link', function(e){
+        e.preventDefault();
+        console.log('click');
+        $.mobile.changePage('#connection-page', {transition: 'slide'});
+    });
     $(document).on('change', '#file-input', function(e) {
         fileHandler.launch(e.target.files);
     });
@@ -26,6 +31,7 @@ $(document).ready(function(){
     $('#connection-form').on('submit', function(e){
         e.preventDefault();
         var infos = $(this).serialize();
+        var username = infos.split('&')[0].split('=')[1].capitalize();
 
         $.post('/users/connect', infos, function(data){
            if(data.success == undefined){
@@ -33,8 +39,33 @@ $(document).ready(function(){
            } else if(data.success == false){
                mobile.displayError(data.message);
            } else if (data.success == true){
-                $('#connection-form').fadeOut('slow');
-                location.hash = 'main-page';
+               // Because jQuery Mobile is so great, I have to set the class
+               // by myself ...
+               $("div:jqmData(role='navbar')").find('ul')
+                   .empty()
+                   .removeClass('ui-grid-solo')
+                   .addClass('ui-grid-a')
+                   .append(
+                     $('<li />')
+                         .addClass('ui-block-a')
+                         .append(
+                         $('<a />')
+                             .addClass('ui-link ui-btn')
+                             .attr('href', '#user-admin-page')
+                             .html('<i class="glyphicon glyphicon-user"></i>' +
+                              ' ' + username)
+                     ),
+                    $('<li />')
+                        .addClass('ui-block-b')
+                        .append(
+                        $('<a />')
+                            .addClass('ui-link ui-btn')
+                            .attr('href', '/users/disconnect')
+                            .html('<i class="glyphicon glyphicon-log-out"></i>'+
+                            ' Se deconnecter')
+                    )
+               );
+               $.mobile.changePage('#main-page', {transition: 'slide'});
            }
         });
     });

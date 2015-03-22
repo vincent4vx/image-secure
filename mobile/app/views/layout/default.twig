@@ -21,7 +21,7 @@
     <div data-role="page" id="main-page">
         {% if auth.userId %}
             <div data-role="header">
-                <div data-role="navbar">
+                <div data-role="navbar" id="navbar">
                     <ul>
                         <li>
                             <a href="/users/admin">
@@ -43,7 +43,7 @@
         <div data-role="header">
             <div data-role="navbar">
                 <ul>
-                    <li><a href="#connection">Connexion</a></li>
+                    <li><a href="#" id="connection-link">Connexion</a></li>
                 </ul>
             </div>
         </div>
@@ -54,25 +54,26 @@
 
             {% endblock %}
         </div>
-        <div data-role="page" id="connection">
-            <form action="/users/connect" method="POST"
-                  id="connection-form">
-                <div data-role="fieldcontain">
-                    <input type="text" id="username_connect"
-                           name="username" placeholder="Nom d'utilisateur">
-                </div>
-                <div data-role="fieldcontain">
-                    <input type="password" name="password"
-                           placeholder="Mot de passe">
-                </div>
-                <button type="submit">
-                    Se connecter
-                </button>
-                <button type="button" id="register-button">
-                    S'inscrire
-                </button>
-            </form>
-        </div>
+    </div>
+    <div data-role="page" id="connection-page" class="mobile-page">
+        <h2>Se connecter</h2>
+        <form action="/users/connect" method="POST"
+              id="connection-form">
+            <div data-role="fieldcontain">
+                <input type="text" id="username_connect"
+                       name="username" placeholder="Nom d'utilisateur">
+            </div>
+            <div data-role="fieldcontain">
+                <input type="password" name="password"
+                       placeholder="Mot de passe">
+            </div>
+            <button type="submit">
+                Se connecter
+            </button>
+            <button type="button" id="register-button">
+                S'inscrire
+            </button>
+        </form>
     </div>
     <div data-role="page" id="image-view-page" class="mobile-page">
         <h2>Votre image</h2>
