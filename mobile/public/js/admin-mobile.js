@@ -33,6 +33,7 @@ function admin(){
                         var key = CryptoJS.AES.decrypt(elem.key, master);
                         key = key.toString(CryptoJS.enc.Utf8);
                         var date = new Date(elem.uploaded * 1000);
+                        console.log(elem.toString());
 
                         list.append(
                             $('<li />')
@@ -46,13 +47,17 @@ function admin(){
                                     elem.imageid + '/' + key )
                                         .text(elem.filename + ' ')
                                         .addClass('clearfix')
+                                        .on('click', function(e){
+                                            e.preventDefault();
+                                            location.href = $(this).attr('href');
+                                        })
                                 ),
                                 $('<span />')
                                     .addClass('ui-block-b')
                                     .append(
                                     $('<span />')
                                         .addClass('pull-right')
-                                        .text('Ajouté le ' + mobile.convertDate(date)),
+                                        .text(mobile.convertDate(date)),
                                     $('<i />')
                                         .addClass('glyphicon glyphicon-trash')
                                         .addClass('remove-file')

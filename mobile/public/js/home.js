@@ -4,6 +4,11 @@ String.prototype.capitalize = function() {
 }
 
 $(document).ready(function(){
+    console.log(location.hash);
+    if(location.hash == '#admin-page'){
+        console.log('mdr');
+        admin();
+    }
     $(document).on({
         dragenter : function(e){fileHandler.onDragEnter(e);},
         dragover : function(e){fileHandler.onDragOver(e);},

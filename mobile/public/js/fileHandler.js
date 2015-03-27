@@ -109,7 +109,7 @@ fileHandler.generateKey = function(){
     for(var i = 0; i < size; ++i) {
         var currentChar = Math.floor(Math.random() * 100);
         // escape space, tab and backspace
-        while($.inArray(currentChar, [32, 9, 8]) !== -1) {
+        while($.inArray(currentChar, [32, 9, 8, 13]) !== -1) {
             currentChar = Math.floor(Math.random() * 100);
         }
         key += String.fromCharCode(currentChar);

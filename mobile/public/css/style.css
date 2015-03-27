@@ -117,3 +117,26 @@ a
     padding-left: 10px;
     padding-right: 10px;
 }
+#admin-page .ui-block-a
+{
+    padding-right: 10px;
+    text-overflow: ellipsis;
+}
+#admin-page .ui-block-a, #admin-page .ui-block-b
+{
+    display: inline-block;
+    width: 50%;
+}
+#admin-page .ui-block-a a
+{
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#admin-page .ui-block-b span
+{
+    display: inline-block;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
