@@ -26,10 +26,9 @@
     top: 30%;
     left: 30%;
 }
-h1
-{
-    font-size: 7rem;
-}
+h1 { font-size: 4.5rem; }
+h2 { font-size: 3rem; }
+h3 { font-size:2rem; }
 h1 a, h1 a:hover, button a, button a:hover
 {
     text-decoration: none;
