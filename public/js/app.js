@@ -394,7 +394,7 @@ app.inputValidity = function(elem, success){
  */
 app.isMailAddressValid = function(email) {
     var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,15})?$/);
-    return pattern.test(email);
+    return (email.length > 6) ? pattern.test(email) : false;
 };
 
 /**
