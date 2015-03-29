@@ -60,27 +60,26 @@
         <form action="/users/connect" method="POST"
               id="connection-form">
             <div data-role="fieldcontain">
-                <input type="text" id="username_connect"
-                       name="username" placeholder="Nom d'utilisateur">
-            </div>
-            <div data-role="fieldcontain">
-                <input type="password" name="password"
-                       placeholder="Mot de passe">
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" id="username_connect" name="username" placeholder="Nom d'utilisateur">
+
+                <label for="password">Mot de passe</label>
+                <input type="password" name="password" placeholder="Mot de passe">
             </div>
             <button type="submit">
                 Se connecter
             </button>
-            <button type="button" id="register-button">
-                S'inscrire
-            </button>
         </form>
+        <button type="button" id="register-button">
+            S'inscrire
+        </button>
     </div>
     <div data-role="page" id="register-page" class="mobile-page">
         <h2>Inscription</h2>
         <form action="/register" method="POST" id="register-form">
             <div data-role="fieldcontain">
                 <label for="username">Nom d'utilisateur</label>
-                <input type="text" id="username" name="username" placeholder="Nom d'utilisateur"/>
+                <input type="text" id="username" name="username" placeholder="Nom d'utilisateur" class="input-valid"/>
 
                 <label for="firstname">Prénom</label>
                 <input type="text" id="firstname" name="firstname" placeholder="Prénom"/>

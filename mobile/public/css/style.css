@@ -144,3 +144,15 @@ a
 {
     margin-top: 10px;
 }
+
+/* Form validation */
+
+.input-valid
+{
+    border: 1px solid green !important;
+}
+
+.input-invalid
+{
+    border: 1px solid red !important;
+}

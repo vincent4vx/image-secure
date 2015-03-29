@@ -180,84 +180,13 @@ var mobile = {};
         $('#upload-success-page input[type="text"]').textinput();
         $.mobile.changePage('#upload-success-page', {transition: 'slide'});
     };
-    /**
-     * This method create the register form
-     */
-    mobile.register = function(){
-        $('.jumbotron').fadeOut(0.0001);
-        $('.jumbotron').fadeIn(1000);
-
-        mobile.newPage();
-
-        $('.jumbotron').append(
-            $('<h2 />')
-                .text('Inscription'),
-            $('<form />')
-        );
-
-        mobile.createFormField('username', 'Nom d\'utilisateur', 'text',
-            'Nom d\'utilisateur');
-
-        mobile.createFormField('firstname', 'Prénom', 'text', 'Prénom');
-
-        mobile.createFormField('lastname', 'Nom', 'text', 'Nom');
-
-        mobile.createFormField('password', 'Mot de passe', 'password',
-            'Mot de passe');
-
-        mobile.createFormField('password_confirm', 'Confirmation', 'password',
-            'Confirmation du mot de passe');
-
-        mobile.createFormField('mail', 'Adresse mail', 'email',
-            'Votre adresse mail');
-
-        $('.jumbotron form').append(
-            $('<div />')
-                .addClass('form-group')
-                .addClass('has-feedback')
-                .append(
-                $('<label />')
-                    .attr('for', 'master_key')
-                    .attr('id', 'master_key_popover')
-                    .append(
-                    $('<a />')
-                        .attr('data-toggle', 'popover')
-                        .attr('data-placement', 'auto')
-                        .attr('data-trigger', 'focus')
-                        .text('Clé Principale')
-                ),
-                $('<input>')
-                    .attr('type', 'text')
-                    .addClass('form-control')
-                    .attr('name', 'master_key')
-                    .attr('id', 'master_key')
-                    .prop('required', true)
-                    .attr('placeholder', 'Votre clé')
-            ),
-            $('<button />')
-                .attr('type', 'submit')
-                .addClass('btn')
-                .addClass('btn-primary')
-                .text('S\'inscrire')
-        );
-        mobile.registerFormBehaviour();
-    };
 
     /**
      * This method set the behaviour for the register form
      * such as input validation or error displaying.
      */
     mobile.registerFormBehaviour = function(){
-        $('#master_key_popover').popover({
-            'content' : "La clé principale vous permet de garder en sécurité les " +
-            "différentes clés privés des fichiers" +
-            " envoyés sur le site, ne perdez pas cette clé, sans " +
-            "elle il vous sera impossible de retrouver " +
-            " vos fichiers et de les visualiser.",
-            'title' : "Qu'est-ce que c'est ?"
-        });
-
-        $('.jumbotron').on('keyup', '#username', function(){
+        $(document).on('keyup', '#username', function(){
             var username = $(this).val();
             if(username.length > 2){
                 $.get('/users/exist/' + username, function(data){
@@ -293,49 +222,7 @@ var mobile = {};
             } else {
                 mobile.inputValidity(this, true);
             }
-        }).on('submit', 'form', function(e){
-            e.preventDefault();
-            var values = $(this).serialize();
-
-            $.post('/register', values, function(data){
-
-                if(data.success != undefined && data.success == true){
-                    mobile.registerSuccess();
-                } else if(data.success != undefined && data.success == false){
-                    mobile.displayError(data.message);
-                } else {
-                    mobile.displayError('Une erreur inconnue est survenue, veuillez ' +
-                    'reéssayer');
-                }
-            });
         });
-    };
-
-    /**
-     * This method create a form field in a form (with required input)
-     * @param name
-     * @param title
-     * @param type
-     * @param placeholder
-     */
-    mobile.createFormField = function(name, title, type, placeholder){
-        $('.jumbotron form').append(
-            $('<div />')
-                .addClass('form-group')
-                .addClass('has-feedback')
-                .append(
-                $('<label />')
-                    .attr('for', name)
-                    .text(title),
-                $('<input>')
-                    .attr('type', type)
-                    .addClass('form-control')
-                    .attr('name', name)
-                    .attr('id', name)
-                    .attr('placeholder', placeholder)
-                    .prop('required', true)
-            )
-        );
     };
 
     /**
@@ -344,31 +231,14 @@ var mobile = {};
      * @param success
      */
     mobile.inputValidity = function(elem, success){
-
-        // If span doesn't exist, we create it
-        if(!$(elem).parent().find('span').length){
-            $(elem).parent().append(
-                $('<span />')
-                    .addClass('glyphicon')
-                    .addClass('form-control-feedback')
-            );
-        }
         if(success == true){
-            $(elem).parent()
-                .removeClass('has-error')
-                .addClass('has-success');
-            $(elem).parent().find('span')
-                .removeClass('glyphicon-remove')
-                .addClass('glyphicon-ok');
-
+            $(elem)
+                .removeClass('input-invalid')
+                .addClass('input-valid');
         } else {
-            $(elem).parent()
-                .addClass('has-error')
-                .removeClass('has-success')
-
-            $(elem).parent().find('span')
-                .removeClass('glyphicon-ok')
-                .addClass('glyphicon-remove');
+            $(elem)
+                .addClass('input-invalid')
+                .removeClass('input-valid')
         }
     };
 

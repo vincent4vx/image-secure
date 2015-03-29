@@ -6,6 +6,8 @@ String.prototype.capitalize = function() {
 $(document).ready(function(){
     if(location.hash == '#admin-page'){
         admin();
+    } else if (location.hash == '#register-page'){
+        mobile.registerFormBehaviour();
     }
 
     $(document).on({
@@ -34,7 +36,8 @@ $(document).ready(function(){
 
     $(document).on('click', '#register-button', function(e){
         e.preventDefault();
-        mobile.register();
+        $.mobile.changePage('#register-page', {transition: 'slide'});
+        mobile.registerFormBehaviour();
     });
 
     $(document).on('click', '#disconnect-link', function(e){
@@ -45,6 +48,7 @@ $(document).ready(function(){
             location.reload();
         });
     });
+
 
     $('#connection-form').on('submit', function(e){
         e.preventDefault();
@@ -81,8 +85,14 @@ $(document).ready(function(){
                            $.mobile.changePage('#main-page', {transition: 'slide'});
                        })
                );
-
                $.mobile.changePage('#' + pageID, {transition: 'slide'});
+
+           } else {
+               var message = (data.success === undefined)
+                   ? 'Une erreur est survenue'
+                   : data.message;
+
+               mobile.displayError(message);
            }
         });
     });
