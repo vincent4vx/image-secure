@@ -30,7 +30,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/users/disconnect">
+                            <a href="#" id="disconnect-link">
                                 <i class="glyphicon glyphicon-log-out"></i>
                                 Se déconnecter
                             </a>
@@ -73,6 +73,35 @@
             <button type="button" id="register-button">
                 S'inscrire
             </button>
+        </form>
+    </div>
+    <div data-role="page" id="register-page" class="mobile-page">
+        <h2>Inscription</h2>
+        <form action="/register" method="POST" id="register-form">
+            <div data-role="fieldcontain">
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" id="username" name="username" placeholder="Nom d'utilisateur"/>
+
+                <label for="firstname">Prénom</label>
+                <input type="text" id="firstname" name="firstname" placeholder="Prénom"/>
+
+                <label for="lastname">Nom</label>
+                <input type="text" id="lastname" name="lastname" placeholder="Nom"/>
+
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" placeholder="Mot de passe"/>
+
+                <label for="password_confirm">Confirmation</label>
+                <input type="password" id="password_confirm" name="password_confirm"
+                       placeholder="Confirmation du mot de passe"/>
+
+                <label for="mail">Adresse mail</label>
+                <input type="email" id="mail" name="mail" placeholder="Votre adresse mail"/>
+
+                <label for="master_key">Clé principale</label>
+                <input type="text" id="master_key" name="master_key" placeholder="Votre clé"/>
+            </div>
+            <button type="submit" class="ui-shadow ui-btn ui-corner-all">Envoyer</button>
         </form>
     </div>
     <div data-role="page" id="image-view-page" class="mobile-page">

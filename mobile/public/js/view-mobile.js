@@ -52,11 +52,11 @@ function init(){
                     .on('click', function(e){
                         e.preventDefault();
                         $.mobile.changePage('#main-page', {transition: 'flow'});
-                        var link = $(location).attr('href').split('/');
-                        link = link.splice(0, 3);
-                        link = link[0] + '//' + link[2];
-                        $(location).attr('href', link);
-                        console.log(location.href);
+
+                        if(typeof location.origin === 'undefined')
+                            location.origin = location.protocol + '//' + location.host;
+
+                        location.href = location.origin;
                     })
             );
         });

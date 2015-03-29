@@ -140,3 +140,7 @@ a
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.mobile-page form label
+{
+    margin-top: 10px;
+}

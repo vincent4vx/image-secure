@@ -35,8 +35,7 @@ function main()
     $router->add('/image/get', new \app\controllers\HomeController(), 'getImage');
     $router->add('/image/delete', new \app\controllers\HomeController(), 'deleteImage');
     $router->add('/upload', new \app\controllers\HomeController(), 'upload', 'POST');
-    $router->add('/register', new \app\controllers\HomeController(),
-        'register', 'POST');
+    $router->add('/register', new \app\controllers\HomeController(), 'register', 'POST');
     $router->add('/users/admin', new \app\controllers\HomeController(), 'admin');
     $router->add('/users/exist', new \app\controllers\HomeController(), 'doesUserExist');
     $router->add('/users/connect', new \app\controllers\HomeController(), 'connect', 'POST');
