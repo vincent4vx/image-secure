@@ -116,7 +116,8 @@ class HomeController extends Controller
         }
         catch(Exception $e)
         {
-            $error = new AJAXAnswer(false, 'Une erreur est survenue durant la récupération de l\'image, veuillez'
+            $error = new AJAXAnswer(false, 'Une erreur est survenue durant la'
+                . ' récupération de l\'image, veuillez'
                 . ' rééssayer ou contacter l\'administrateur du site');
             $error->answer();
         }
@@ -259,7 +260,7 @@ class HomeController extends Controller
 
             $response = new AJAXAnswer(true, $master);
         } else {
-            $reponse = new AJAXAnswer(false, '');
+            $response = new AJAXAnswer(false, '');
         }
 
         $response->answer();

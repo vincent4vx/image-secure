@@ -141,8 +141,9 @@ app.generateEncryptForm = function(filename, image){
  * @param key
  */
 app.onFileUploadSuccess = function(fileID, key){
-    $('#content').empty();
-    $('#content').append(
+    $('#content')
+        .empty()
+        .append(
         $('<h2 />')
             .text('Terminé'),
         $('<p />')
@@ -173,9 +174,9 @@ app.onFileUploadSuccess = function(fileID, key){
 app.newPage = function(){
     app.jumbotron = $('.jumbotron').html();
 
-    $('.jumbotron').empty();
-
-    $('.jumbotron').append(
+    $('.jumbotron')
+        .empty()
+        .append(
         $('<button />')
             .attr('type', 'button')
             .attr('id', 'return-btn')
@@ -191,8 +192,9 @@ app.newPage = function(){
 
     $('.jumbotron').on('click', '#return-btn', function(e){
         e.preventDefault();
-        $('.jumbotron').empty();
-        $('.jumbotron').html(app.jumbotron);
+        $('.jumbotron')
+            .empty()
+            .html(app.jumbotron);
     });
 };
 
@@ -211,21 +213,18 @@ app.register = function(){
         $('<form />')
     );
 
-    app.createFormField('username', 'Nom d\'utilisateur', 'text',
+    app.createFormField('username', 'text',
         'Nom d\'utilisateur');
 
-    app.createFormField('firstname', 'Prénom', 'text', 'Prénom');
+    app.createFormField('firstname', 'text', 'Prénom');
 
-    app.createFormField('lastname', 'Nom', 'text', 'Nom');
+    app.createFormField('lastname', 'text', 'Nom');
 
-    app.createFormField('password', 'Mot de passe', 'password',
-        'Mot de passe');
+    app.createFormField('password', 'password', 'Mot de passe');
 
-    app.createFormField('password_confirm', 'Confirmation', 'password',
-        'Confirmation du mot de passe');
+    app.createFormField('password_confirm', 'password', 'Confirmation du mot de passe');
 
-    app.createFormField('mail', 'Adresse mail', 'email',
-        'Votre adresse mail');
+    app.createFormField('mail', 'email', 'Votre adresse mail');
 
     $('.jumbotron form').append(
         $('<div />')
@@ -240,7 +239,7 @@ app.register = function(){
                         .attr('data-toggle', 'popover')
                         .attr('data-placement', 'auto')
                         .attr('data-trigger', 'focus')
-                        .text('Clé Principale')
+                        .text('Clé Principale ?')
             ),
             $('<input>')
                 .attr('type', 'text')
@@ -257,6 +256,7 @@ app.register = function(){
             .text('S\'inscrire')
     );
     app.registerFormBehaviour();
+    $('#username').focus();
 };
 
 /**
@@ -334,15 +334,12 @@ app.registerFormBehaviour = function(){
  * @param type
  * @param placeholder
  */
-app.createFormField = function(name, title, type, placeholder){
+app.createFormField = function(name, type, placeholder){
     $('.jumbotron form').append(
         $('<div />')
             .addClass('form-group')
             .addClass('has-feedback')
             .append(
-            $('<label />')
-                .attr('for', name)
-                .text(title),
             $('<input>')
                 .attr('type', type)
                 .addClass('form-control')
@@ -392,7 +389,7 @@ app.inputValidity = function(elem, success){
  * Check email address validity
  * Thanks to stackoverflow I don't have to write my own regex
  * Shamefully copied at http://stackoverflow.com/a/17968929
- * @param emailAddress
+ * @param email
  * @returns {boolean}
  */
 app.isMailAddressValid = function(email) {
