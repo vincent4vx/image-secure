@@ -1,7 +1,0 @@
-{
-  "host": "localhost",
-  "user": "root",
-  "password": "",
-  "database": "image-secure",
-  "port": "3306"
-}

@@ -26,7 +26,7 @@ if (DEBUG) {
 
 function main()
 {
-    DatabaseProvider::connect("app/config/database.json");
+    DatabaseProvider::connect("../app/config/database.json");
 
     $router = new \SFramework\Routing\Router();
 
