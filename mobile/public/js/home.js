@@ -2,10 +2,11 @@
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
+var mobile = {};
 
 $(document).ready(function(){
     if(location.hash == '#admin-page'){
-        admin();
+        admin.admin();
     } else if (location.hash == '#register-page'){
         mobile.registerFormBehaviour();
     }
@@ -18,7 +19,7 @@ $(document).ready(function(){
     }, '#main-page');
 
     $(document).on('click', '#admin-page-link', function(){
-        admin();
+        admin.admin();
     });
 
     $(document).on('click', '#connection-link', function(e){
