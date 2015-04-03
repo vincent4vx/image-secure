@@ -88,6 +88,7 @@ var admin = {};
                             .attr('href', 'http://' +
                             window.location.host + '/image/view/' +
                             elem.imageid + '/' + key )
+                            .attr('rel', 'external')
                             .text(elem.filename + ' ')
                             .on('click', function(e){
                                 e.preventDefault();

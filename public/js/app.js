@@ -407,7 +407,7 @@ app.registerSuccess = function(){
             .text('Inscription réussie'),
         $('<p />')
             .text('Bravo, votre inscription est réussie, vous pouvez maintenant'
-            + ' vous connecter sur notre site et profiter de ces ' +
+            + ' vous connecter sur notre site et profiter de ses ' +
                     ' fonctionnalités !')
     );
 };
