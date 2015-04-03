@@ -324,4 +324,14 @@ class HomeController extends Controller
             $error->answer();
         }
     }
+
+    public function about()
+    {
+        $this->getView()->render('/home/about');
+    }
+
+    public function partners()
+    {
+        $this->getView()->render('/home/partners');
+    }
 }

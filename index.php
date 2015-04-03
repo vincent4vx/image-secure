@@ -43,6 +43,8 @@ function main()
     $router->add('/users/disconnect', new \app\controllers\HomeController(), 'disconnect');
     $router->add('/users/getimages', new \app\controllers\HomeController(), 'getImages');
     $router->add('/check', new \app\controllers\HomeController(), 'check');
+    $router->add('/about', new \app\controllers\HomeController(), 'about');
+    $router->add('/partners', new \app\controllers\HomeController(), 'partners');
     $router->add('/', new \app\controllers\HomeController(), 'index');  
 
     $router->matchCurrentRequest();

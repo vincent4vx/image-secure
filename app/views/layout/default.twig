@@ -32,6 +32,14 @@
                     <a class="navbar-brand" href="/">Image Secure</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li>
+                            <a href="/partners">Partenaires</a>
+                        </li>
+                        <li>
+                            <a href="/about">À propos</a>
+                        </li>
+                    </ul>
                     {% if auth.userId %}
                         <ul class="nav navbar-nav navbar-right">
                             <li>
@@ -84,13 +92,14 @@
     <footer class="footer">
         <div class="container">
             <p>
-                Fièrement propulsé par
+                <a href="//thomasmunoz.fr">Thomas Munoz</a>
+                - Fièrement propulsé par
                 <a href="//github.com/thomasmunoz13/SFramework">
                     SFramework
                 </a>
                 - Sources disponibles sur
                 <a href="//github.com/thomasmunoz13/image-secure">
-                    github
+                    Github
                 </a>
             </p>
         </div>
@@ -99,9 +108,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
     <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha1.js"></script>
-    {{ helpers.assets.js('app') }}
-    {{ helpers.assets.js('fileHandler') }}
     {{ helpers.assets.js('home') }}
+    {{ helpers.assets.js('fileHandler') }}
+    {{ helpers.assets.js('app-file') }}
+    {{ helpers.assets.js('app-register') }}
+    {{ helpers.assets.js('app-utils') }}
     {% block scripts %}
 
     {% endblock %}

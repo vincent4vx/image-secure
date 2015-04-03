@@ -1,0 +1,60 @@
+{% extends "layout/default" %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h2>À propos</h2>
+        <p>
+            Ce site a été réalisé dans le cadre des cours de programmation web
+            côté client, le but de ce projet était de créer un site web complet
+            en exploitant au maximum les possibilités offertes par Javascript
+            et plus précisément jQuery et jQuery Mobile.
+            <br/>
+
+            Une version mobile est présente
+            <a href="//mobile.image-secure.munoz.ovh">à cette adresse</a>.
+            <br/>
+
+            Son but est de répondre à une problématique simple :
+            <b>stocker et partager</b> des images en ligne sans devoir faire
+            forcément confiance au service qui l'héberge.
+            <br/>
+
+            Les images ainsi envoyés au serveur sont donc préalablement chiffrées
+            grâce à l'algorithme
+            <a href="//en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>
+            avec la clé fournie lors de la création de l'image
+            sur le site, <b>à aucun moment</b> le serveur n'a connaissance de la clé.
+            <br/>
+
+            Aussi, notez que le service n'est pas parfait et demanderai plus de temps
+            pour s'en rapprocher au mieux, il n'est donc pas garanti que la sécurité
+            du service soit totale
+            <br/>
+            <br/>
+
+
+            Enfin, notez que si vous souhaitez conserver l'anonymat des
+            images stockées et la meilleure sécurité, il vous est déconseillé
+            de les envoyer lorsque vous êtes connecté.
+            En effet, une copie (chiffrée) de la clé est envoyée au serveur
+            afin de vous permettre de consulter plus simplement l'historique de
+            vos envois sur le site.
+            <br/>
+
+            Le choix de conserver ces clés a été fait de manière à simplifier le
+            plus possible les interactions entre l'utilisateur et le service
+            et de rendre le moins contraignant son utilisation.
+            Je comprends tout à fait le problème que cela peut réprésenter pour
+            certains utilisateurs et je les invite à utiliser d'autres services,
+            plus stables et maintenu quotidiennement.
+            <br/>
+            <br/>
+
+
+            Ce site vous est proposé par
+            <a href="//thomasmunoz.fr">Thomas Munoz</a>
+            et les sources sont disponibles sur
+            <a href="//github.com/thomasmunoz13/image-secure">Github</a>
+        </p>
+    </div>
+{% endblock %}
