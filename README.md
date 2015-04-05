@@ -31,6 +31,6 @@ ln -s ../content .
 ```nginx
 autoindex off;
 location / {
-rewrite ^(.*)$ /index.php/$1 break;
+  rewrite ^(.*)$ /index.php/$1 break;
 }
 ```
