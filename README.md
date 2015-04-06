@@ -3,6 +3,10 @@
 In the client side web developement class (at the Aix-en-Provence IUT) we had to create a website using jQuery and its mobile
 version with jQuery Mobile.
 
+You can find the websites here : 
+- [The desktop version] (http://image-secure.munoz.ovh)
+- [The mobile version] (http://mobile.image-secure.munoz.ovh)
+
 ## How to set up this website on my own web server ?
 It's quiet simple (if you're on Windows [download cmder](http://gooseberrycreative.com/cmder/) to follow these steps)
 
