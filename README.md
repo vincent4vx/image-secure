@@ -8,7 +8,7 @@ You can find the websites here :
 - [The mobile version] (http://mobile.image-secure.munoz.ovh)
 
 ## How to set up this website on my own web server ?
-It's quiet simple (if you're on Windows [download cmder](http://gooseberrycreative.com/cmder/) to follow these steps)
+It's quiet simple (if you're on Windows I recommand you to use cmder to follow these steps. [Download cmder](http://gooseberrycreative.com/cmder/)
 
 - Clone this project 
 ```
