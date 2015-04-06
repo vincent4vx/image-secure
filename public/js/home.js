@@ -5,6 +5,9 @@ String.prototype.capitalize = function() {
 var app = {};
 
 $(document).ready(function(){
+
+    isMobile.detect();
+
     $(document).on({
         dragenter : function(e){fileHandler.onDragEnter(e);},
         dragover : function(e){fileHandler.onDragOver(e);},
