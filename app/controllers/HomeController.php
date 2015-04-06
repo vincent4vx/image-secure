@@ -73,8 +73,7 @@ class HomeController extends Controller
         catch(InputNotSetException $e)
         {
             $error = new AJAXAnswer(false);
-            $error->setMessage('La requête envoyée au serveur n\'est pas complète, merci de rééssayer ou de contacter'
-                              . ' l\'administrateur du site si cette même erreur survient');
+            $error->setMessage('L\'image envoyée est trop lourde (taille conseillée < 2mo)');
             $error->answer();
         }
         catch(\Exception $e)
