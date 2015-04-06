@@ -20,6 +20,7 @@ git clone https://github.com/thomasmunoz13/image-secure
 cd image-secure
 [php composer.phar] install // this part may change depending of your installation
 ```
+- Create your image-secure database (with the config/database.sql given)
 - And the last commands : 
 ```
 cd image-secure 
