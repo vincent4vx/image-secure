@@ -2,11 +2,9 @@
  * Created by thomasmunoz on 07/03/15.
  */
 $(document).ready(function(){
-    var url = $(location).attr('href').split('/');
-    
-    console.log(location);
+    var url = location.pathname.split('/');
 
-    var imageID = url[url.indexOf('view') + 1];
+    var imageID = url[url.length - 1];
     //var key = url[url.indexOf('view') + 2];
     var key = location.hash.substr(1);
 
