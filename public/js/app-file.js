@@ -82,12 +82,11 @@
                         .attr('for', 'link')
                         .text('Votre lien'),
                     $('<input>')
-                        .attr('type', 'email')
                         .attr('name', 'link')
                         .attr('type', 'text')
                         .addClass('form-control')
                         .attr('value', 'http://' + window.location.host +
-                        '/image/view/' + fileID + '/' + key)
+                        '/image/view/' + fileID + '#' + key)
                 )
             )
         );

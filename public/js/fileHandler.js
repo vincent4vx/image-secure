@@ -32,11 +32,11 @@ var fileHandler = {};
      */
     fileHandler.encrypt = function(filename, image, key){
         var imageArray = image.split(',');
-        var keyCrypted = CryptoJS.SHA1(key.value).toString();
-        var encrypt = CryptoJS.AES.encrypt(imageArray[1], keyCrypted);
+        //var keyCrypted = CryptoJS.SHA1(key.value).toString();
+        var encrypt = CryptoJS.AES.encrypt(imageArray[1], key.value);
 
         encrypt = imageArray[0] + ',' + encrypt.toString();
-        fileHandler.upload(filename, encrypt, keyCrypted);
+        fileHandler.upload(filename, encrypt, key.value);
     };
 
     fileHandler.decrypt = function(image, key){

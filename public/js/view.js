@@ -8,7 +8,8 @@ $(document).ready(function(){
     // by itself (HomeController))
     if(url.length == 7){
         var imageID = url[url.indexOf('view') + 1];
-        var key = url[url.indexOf('view') + 2];
+        //var key = url[url.indexOf('view') + 2];
+        var key = location.hash.substr(1);
 
        // Loading message for big images
         $('.content').append(
