@@ -117,11 +117,8 @@ var fileHandler = {};
         var size = Math.floor(Math.random() * 64) + 32;
 
         for(var i = 0; i < size; ++i) {
-            var currentChar = Math.floor(Math.random() * 100);
-            // escape space, tab and backspace
-            while($.inArray(currentChar, [32, 9, 8]) !== -1) {
-                currentChar = Math.floor(Math.random() * 100);
-            }
+            var currentChar = Math.floor(33 + Math.random() * 126); //random number from 33 to 126 = displayable chars
+            
             key += String.fromCharCode(currentChar);
         }
         return key;
