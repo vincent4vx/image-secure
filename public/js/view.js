@@ -3,6 +3,8 @@
  */
 $(document).ready(function(){
     var url = $(location).attr('href').split('/');
+    
+    console.log(location);
 
     var imageID = url[url.indexOf('view') + 1];
     //var key = url[url.indexOf('view') + 2];
