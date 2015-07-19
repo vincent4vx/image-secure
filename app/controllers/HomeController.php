@@ -103,8 +103,11 @@ class HomeController extends Controller
             $imageID = Input::get('id');
             $image = @file_get_contents('content/' . $imageID);
             
-            if(!$image)
-                throw new Exception('Image not found', 404);
+            if(!$image){
+                $err = new AJAXAnswer(FALSE, 'Image introuvable');
+                $err->answer();
+                exit;
+            }
             
             $response = new AJAXAnswer(true, $image);
             $response->answer(true);
@@ -114,7 +117,7 @@ class HomeController extends Controller
             $error = new AJAXAnswer(false, $e->getMessage());
             $error->answer();
         }
-        catch(Exception $e)
+        catch(\Exception $e)
         {
             $error = new AJAXAnswer(false, 'Une erreur est survenue durant la'
                 . ' récupération de l\'image, veuillez'
