@@ -45,7 +45,7 @@ $(document).ready(function(){
                                     .append(
                                     $('<a />').attr('href', 'http://' +
                                         window.location.host + '/image/view/' +
-                                        elem.imageid + '/' + key )
+                                        elem.imageid + '#' + key )
                                         .text(elem.filename + ' ')
                                         .addClass('clearfix')
                                 ),
