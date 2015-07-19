@@ -54,7 +54,7 @@
                             e.preventDefault();
                             fileHandler.encrypt(filename,
                                 image,
-                                $('form').serializeArray()[0]);
+                                $(this).parents('form').serializeArray()[0]);
                         })
                 )
             )
