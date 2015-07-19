@@ -88,10 +88,7 @@ class HomeController extends Controller
         try
         {
             $params = $this->getParams();
-            if(count($params) == 2)
-                $this->getView()->render('home/view');
-            else
-                $this->getView()->render('home/view', ['missingKey' => true]);
+            $this->getView()->render('home/view');
         }
         catch(MissingParamsException $e)
         {
