@@ -58,7 +58,7 @@ class HomeController extends Controller
                 throw new \Exception('Le format envoyé n\'est pas valide');
             }
             $realFileName = $filenamePOST;
-            $fileName = sha1($filenamePOST . time());
+            $fileName = hash('sha256', uniqid());
             $file = new \SplFileObject('content/' . $fileName , 'wb');
             $file->fwrite($data[0] . ',' . $data[1]);
 
