@@ -16,12 +16,15 @@ if (dirname($_SERVER['SCRIPT_NAME']) != '/') {
     define('WEBROOT', dirname($_SERVER['SCRIPT_NAME']));
 }
 
-define('DEBUG', true);
+define('DEBUG', false);
 
 if (DEBUG) {
     ini_set('display_errors', true);
     ini_set('html_errors', true);
     error_reporting(E_ALL);
+}else{
+    error_reporting(0);
+    ini_set('display_errors', false);
 }
 
 function main()
@@ -56,6 +59,7 @@ if (DEBUG) {
     try {
         main();
     } catch (Exception $e) {
+        http_response_code(500);
         echo 'Internal server error.';
     }
 }
