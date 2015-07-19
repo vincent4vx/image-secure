@@ -33,6 +33,7 @@ var fileHandler = {};
     fileHandler.encrypt = function(filename, image, key){
         var imageArray = image.split(',');
         //var keyCrypted = CryptoJS.SHA1(key.value).toString();
+        console.log(key);
         var encrypt = CryptoJS.AES.encrypt(imageArray[1], key);
 
         encrypt = imageArray[0] + ',' + encrypt.toString();
