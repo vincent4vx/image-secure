@@ -102,7 +102,10 @@ class HomeController extends Controller
         {
             $imageID = Input::get('id');
             $image = @file_get_contents('content/' . $imageID);
-            throw new Exception('Image not found', 404);
+            
+            if(!$image)
+                throw new Exception('Image not found', 404);
+            
             $response = new AJAXAnswer(true, $image);
             $response->answer(true);
         }
