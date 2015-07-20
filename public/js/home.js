@@ -6,7 +6,7 @@ var app = {};
 
 $(document).ready(function(){
 
-    isMobile.detect();
+    //isMobile.detect();
 
     $(document).on({
         dragenter : function(e){fileHandler.onDragEnter(e);},
